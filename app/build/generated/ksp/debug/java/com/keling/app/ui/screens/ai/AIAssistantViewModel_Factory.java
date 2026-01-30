@@ -1,6 +1,6 @@
 package com.keling.app.ui.screens.ai;
 
-import com.keling.app.data.remote.KelingApiService;
+import com.keling.app.data.repository.QwenRepository;
 import com.keling.app.data.repository.TaskRepository;
 import com.keling.app.data.repository.UserRepository;
 import dagger.internal.DaggerGenerated;
@@ -28,29 +28,29 @@ public final class AIAssistantViewModel_Factory implements Factory<AIAssistantVi
 
   private final Provider<UserRepository> userRepositoryProvider;
 
-  private final Provider<KelingApiService> kelingApiServiceProvider;
+  private final Provider<QwenRepository> qwenRepositoryProvider;
 
   public AIAssistantViewModel_Factory(Provider<TaskRepository> taskRepositoryProvider,
       Provider<UserRepository> userRepositoryProvider,
-      Provider<KelingApiService> kelingApiServiceProvider) {
+      Provider<QwenRepository> qwenRepositoryProvider) {
     this.taskRepositoryProvider = taskRepositoryProvider;
     this.userRepositoryProvider = userRepositoryProvider;
-    this.kelingApiServiceProvider = kelingApiServiceProvider;
+    this.qwenRepositoryProvider = qwenRepositoryProvider;
   }
 
   @Override
   public AIAssistantViewModel get() {
-    return newInstance(taskRepositoryProvider.get(), userRepositoryProvider.get(), kelingApiServiceProvider.get());
+    return newInstance(taskRepositoryProvider.get(), userRepositoryProvider.get(), qwenRepositoryProvider.get());
   }
 
   public static AIAssistantViewModel_Factory create(Provider<TaskRepository> taskRepositoryProvider,
       Provider<UserRepository> userRepositoryProvider,
-      Provider<KelingApiService> kelingApiServiceProvider) {
-    return new AIAssistantViewModel_Factory(taskRepositoryProvider, userRepositoryProvider, kelingApiServiceProvider);
+      Provider<QwenRepository> qwenRepositoryProvider) {
+    return new AIAssistantViewModel_Factory(taskRepositoryProvider, userRepositoryProvider, qwenRepositoryProvider);
   }
 
   public static AIAssistantViewModel newInstance(TaskRepository taskRepository,
-      UserRepository userRepository, KelingApiService kelingApiService) {
-    return new AIAssistantViewModel(taskRepository, userRepository, kelingApiService);
+      UserRepository userRepository, QwenRepository qwenRepository) {
+    return new AIAssistantViewModel(taskRepository, userRepository, qwenRepository);
   }
 }
