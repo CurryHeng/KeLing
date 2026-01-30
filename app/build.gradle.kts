@@ -1,8 +1,8 @@
 plugins {
-    id("com.android.application") version "8.2.0"
-    id("org.jetbrains.kotlin.android") version "1.9.20"
-    id("com.google.dagger.hilt.android") version "2.48"
-    id("com.google.devtools.ksp") version "1.9.20-1.0.14"
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+    id("com.google.dagger.hilt.android")
+    id("com.google.devtools.ksp")
 }
 
 import java.util.Properties
@@ -140,15 +140,21 @@ dependencies {
     // Testing
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.10.01"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
 
-tasks.withType<Wrapper>().configureEach {
+// Restore wrapper task for :app module, matching root version to satisfy tooling requests
+tasks.register<Wrapper>("wrapper") {
     gradleVersion = "8.5"
+    distributionUrl = "https://services.gradle.org/distributions/gradle-8.5-bin.zip"
+    validateDistributionUrl = false
+}
+
+// IDE sync expects this task in some setups
+if (tasks.findByName("prepareKotlinBuildScriptModel") == null) {
+    tasks.register("prepareKotlinBuildScriptModel") {}
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {

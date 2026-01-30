@@ -26,10 +26,9 @@ data class AIAssistantUiState(
 @HiltViewModel
 class AIAssistantViewModel @Inject constructor(
     private val taskRepository: TaskRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val qwenRepository: QwenRepository
 ) : ViewModel() {
-
-    private val qwenRepository = QwenRepository()
 
     private val _uiState = MutableStateFlow(
         AIAssistantUiState(
