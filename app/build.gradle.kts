@@ -33,6 +33,21 @@ android {
         buildConfigField("String", "QWEN_API_KEY", "\"$qwenApiKey\"")
         buildConfigField("String", "QWEN_BASE_URL", "\"$qwenBaseUrl\"")
 
+        // 注入 local.properties 定义的多厂商 Keys
+        val keyQwen = localProps.getProperty("KEY_QWEN") ?: ""
+        val keyDoubao = localProps.getProperty("KEY_DOUBAO") ?: ""
+        val keyMoonshot = localProps.getProperty("KEY_MOONSHOT") ?: ""
+        val keyGemini = localProps.getProperty("KEY_GEMINI") ?: ""
+        val keyOpenai = localProps.getProperty("KEY_OPENAI") ?: ""
+        val keyDeepseek = localProps.getProperty("KEY_DEEPSEEK") ?: ""
+
+        buildConfigField("String", "KEY_QWEN", "\"$keyQwen\"")
+        buildConfigField("String", "KEY_DOUBAO", "\"$keyDoubao\"")
+        buildConfigField("String", "KEY_MOONSHOT", "\"$keyMoonshot\"")
+        buildConfigField("String", "KEY_GEMINI", "\"$keyGemini\"")
+        buildConfigField("String", "KEY_OPENAI", "\"$keyOpenai\"")
+        buildConfigField("String", "KEY_DEEPSEEK", "\"$keyDeepseek\"")
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
@@ -148,7 +163,7 @@ dependencies {
 // Restore wrapper task for :app module, matching root version to satisfy tooling requests
 tasks.register<Wrapper>("wrapper") {
     gradleVersion = "8.5"
-    distributionUrl = "https://services.gradle.org/distributions/gradle-8.5-bin.zip"
+    distributionUrl = "https://mirrors.cloud.tencent.com/gradle/gradle-8.5-bin.zip"
     validateDistributionUrl = false
 }
 
