@@ -21,3 +21,4 @@ output/
 # Misc
 .DS_Store
 *.log
+Thumbs.db

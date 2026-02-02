@@ -41,7 +41,6 @@ class UserRepositoryImpl @Inject constructor(
                 userDao.updateLastLogin(user.id, System.currentTimeMillis())
                 Result.success(user)
             } else {
-                // 首次登录：创建新用户
                 val newUser = createNewUser(username.trim(), role)
                 userDao.insertUser(newUser)
                 currentUserId = newUser.id

@@ -5,9 +5,20 @@ plugins {
     id("com.google.devtools.ksp")
 }
 
+import java.util.Properties
+import java.io.FileInputStream
+
 android {
     namespace = "com.keling.app"
     compileSdk = 34
+
+    // Read local.properties for Qwen credentials
+    val localProps = Properties().apply {
+        val lpFile = rootProject.file("local.properties")
+        if (lpFile.exists()) {
+            FileInputStream(lpFile).use { load(it) }
+        }
+    }
 
     defaultConfig {
         applicationId = "com.keling.app"
@@ -15,6 +26,27 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0.0"
+
+        // Qwen API config from local.properties
+        val qwenApiKey = (localProps.getProperty("QWEN_API_KEY") ?: "").trim()
+        val qwenBaseUrl = (localProps.getProperty("QWEN_BASE_URL") ?: "https://dashscope.aliyuncs.com/").trim()
+        buildConfigField("String", "QWEN_API_KEY", "\"$qwenApiKey\"")
+        buildConfigField("String", "QWEN_BASE_URL", "\"$qwenBaseUrl\"")
+
+        // 注入 local.properties 定义的多厂商 Keys
+        val keyQwen = localProps.getProperty("KEY_QWEN") ?: ""
+        val keyDoubao = localProps.getProperty("KEY_DOUBAO") ?: ""
+        val keyMoonshot = localProps.getProperty("KEY_MOONSHOT") ?: ""
+        val keyGemini = localProps.getProperty("KEY_GEMINI") ?: ""
+        val keyOpenai = localProps.getProperty("KEY_OPENAI") ?: ""
+        val keyDeepseek = localProps.getProperty("KEY_DEEPSEEK") ?: ""
+
+        buildConfigField("String", "KEY_QWEN", "\"$keyQwen\"")
+        buildConfigField("String", "KEY_DOUBAO", "\"$keyDoubao\"")
+        buildConfigField("String", "KEY_MOONSHOT", "\"$keyMoonshot\"")
+        buildConfigField("String", "KEY_GEMINI", "\"$keyGemini\"")
+        buildConfigField("String", "KEY_OPENAI", "\"$keyOpenai\"")
+        buildConfigField("String", "KEY_DEEPSEEK", "\"$keyDeepseek\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -43,6 +75,7 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 
     composeOptions {
@@ -131,4 +164,15 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+}
+
+// IDE sync expects this task in some setups
+if (tasks.findByName("prepareKotlinBuildScriptModel") == null) {
+    tasks.register("prepareKotlinBuildScriptModel") {}
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    kotlinOptions {
+        jvmTarget = "17"
+    }
 }

@@ -1,7 +1,5 @@
 package com.keling.app.data.repository
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
 import com.keling.app.data.local.dao.TaskDao
@@ -57,7 +55,6 @@ interface TaskRepository {
     /** 根据标题完成一条挑战任务（用于实践星球报名的活动完成） */
     suspend fun completeChallengeTaskByTitle(title: String)
 
-    // 新增：更新单个 Task（最小、语义清晰）
     suspend fun update(task: Task)
 }
 
@@ -142,9 +139,11 @@ class TaskRepositoryImpl @Inject constructor(
 
     private val difficultyAlpha = 0.25f
     private val difficultyBeta = 1.5f
+
     override suspend fun update(task: Task) {
         taskDao.updateTask(task)
     }
+
     override fun getActiveTasks(): Flow<List<Task>> = taskDao.getActiveTasks()
 
     override fun getActiveTasksForGrade(grade: String): Flow<List<Task>> =
@@ -300,16 +299,14 @@ class TaskRepositoryImpl @Inject constructor(
                 (task.estimatedMinutes ?: 0).coerceAtLeast(1)
             }
             else -> {
-                // 默认兜底：使用估算时长或 1 分钟
                 (task.estimatedMinutes ?: 0).coerceAtLeast(1)
             }
         }
-// 在使用 session 的地方添加或恢复下面的构造（确保在同一函数/作用域中）
         val session = StudySession(
-            id = UUID.randomUUID().toString(),      // 要和 StudySession 实体的 id 类型匹配（建议为 String）
+            id = UUID.randomUUID().toString(),
             dayKey = currentDayKey(),
-            source = "TASK_${source.name}",         // 或其它合适的 source 字符串
-            taskId = task.id,                       // 若是手动记录，taskId 可能为 null
+            source = "TASK_${source.name}",
+            taskId = task.id,
             durationMinutes = minutes.coerceAtLeast(1)
         )
         taskDao.insertStudySession(session)

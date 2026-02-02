@@ -41,6 +41,7 @@ import com.keling.app.ui.screens.settings.PersonalProfileScreen
 import com.keling.app.ui.screens.settings.PrivacySettingsScreen
 import com.keling.app.ui.screens.settings.SettingsScreen
 import com.keling.app.ui.screens.settings.StorageManagementScreen
+import com.keling.app.ui.screens.settings.AiSettingsScreen
 import com.keling.app.ui.screens.splash.SplashScreen
 import com.keling.app.ui.screens.tasks.TaskDetailScreen
 import com.keling.app.ui.screens.tasks.TaskExecutionScreen
@@ -282,17 +283,14 @@ fun KelingNavHost() {
                 )
             }
 
-            // 学情报告
             composable(Screen.LearningReport.route) {
                 LearningReportScreen(onBack = { navController.popBackStack() })
             }
 
-            // 学习记录
             composable(Screen.LearningRecords.route) {
                 LearningRecordsScreen(onBack = { navController.popBackStack() })
             }
 
-            // 知识图谱入口（选课后进入知识图谱）
             composable(Screen.KnowledgeGraphEntry.route) {
                 KnowledgeGraphEntryScreen(
                     onBack = { navController.popBackStack() },
@@ -302,12 +300,10 @@ fun KelingNavHost() {
                 )
             }
 
-            // 我的好友
             composable(Screen.Friends.route) {
                 FriendsScreen(onBack = { navController.popBackStack() })
             }
 
-            // 排行榜
             composable(Screen.Leaderboard.route) {
                 LeaderboardScreen(onBack = { navController.popBackStack() })
             }
@@ -336,6 +332,7 @@ fun KelingNavHost() {
                     onNavigateToAccessibility = { navController.navigate(Screen.AccessibilitySettings.route) },
                     onNavigateToNotification = { navController.navigate(Screen.NotificationSettings.route) },
                     onNavigateToStorage = { navController.navigate(Screen.StorageManagement.route) },
+                    onNavigateToAiSettings = { navController.navigate(Screen.AiSettings.route) },
                     onNavigateToAbout = { navController.navigate(Screen.About.route) },
                     onNavigateToHelp = { navController.navigate(Screen.HelpFeedback.route) },
                     onLogout = {
@@ -376,6 +373,10 @@ fun KelingNavHost() {
             // 存储管理
             composable(Screen.StorageManagement.route) {
                 StorageManagementScreen(onBack = { navController.popBackStack() })
+            }
+
+            composable(Screen.AiSettings.route) {
+                AiSettingsScreen(onBack = { navController.popBackStack() })
             }
 
             // 关于课灵

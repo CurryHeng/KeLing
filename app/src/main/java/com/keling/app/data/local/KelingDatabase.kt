@@ -5,7 +5,6 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.keling.app.data.local.dao.*
 import com.keling.app.data.model.*
-// 导入你刚创建的实体类
 import com.keling.app.data.local.entity.TaskRecordEntity
 
 @Database(
