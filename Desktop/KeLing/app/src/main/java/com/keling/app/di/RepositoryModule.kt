@@ -34,4 +34,10 @@ abstract class RepositoryModule {
     abstract fun bindAchievementRepository(
         impl: AchievementRepositoryImpl
     ): AchievementRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindCheckInRepository(
+        impl: CheckInRepositoryImpl
+    ): CheckInRepository
 }

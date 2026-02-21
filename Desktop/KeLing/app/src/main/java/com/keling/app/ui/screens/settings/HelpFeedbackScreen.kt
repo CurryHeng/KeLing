@@ -38,20 +38,20 @@ fun HelpFeedbackScreen(
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        containerColor = DarkBackground
+        containerColor = PaperBackground
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .background(DarkBackground)
+                .background(PaperBackground)
         ) {
             TopAppBar(
                 title = {
                     Text(
                         text = "帮助与反馈",
                         style = MaterialTheme.typography.titleLarge,
-                        color = TextPrimary
+                        color = InkPrimary
                     )
                 },
                 navigationIcon = {
@@ -59,12 +59,12 @@ fun HelpFeedbackScreen(
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "返回",
-                            tint = TextPrimary
+                            tint = InkPrimary
                         )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = DarkBackground
+                    containerColor = PaperBackground
                 )
             )
 
@@ -78,9 +78,9 @@ fun HelpFeedbackScreen(
                 Text(
                     text = "常见问题",
                     style = MaterialTheme.typography.titleMedium,
-                    color = TextPrimary
+                    color = InkPrimary
                 )
-                NeonCard(glowColor = DarkBorder) {
+                NeonCard(glowColor = PaperBorder) {
                     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         faqItems.forEachIndexed { index, (question, answer) ->
                             Surface(
@@ -103,13 +103,13 @@ fun HelpFeedbackScreen(
                                         Text(
                                             text = question,
                                             style = MaterialTheme.typography.bodyLarge,
-                                            color = TextPrimary,
+                                            color = InkPrimary,
                                             modifier = Modifier.weight(1f)
                                         )
                                         Icon(
                                             imageVector = if (expandedIndex == index) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
                                             contentDescription = null,
-                                            tint = TextSecondary
+                                            tint = InkSecondary
                                         )
                                     }
                                     if (expandedIndex == index) {
@@ -117,7 +117,7 @@ fun HelpFeedbackScreen(
                                         Text(
                                             text = answer,
                                             style = MaterialTheme.typography.bodySmall,
-                                            color = TextSecondary
+                                            color = InkSecondary
                                         )
                                     }
                                 }
@@ -129,26 +129,26 @@ fun HelpFeedbackScreen(
                 Text(
                     text = "意见反馈",
                     style = MaterialTheme.typography.titleMedium,
-                    color = TextPrimary
+                    color = InkPrimary
                 )
                 OutlinedTextField(
                     value = feedbackText,
                     onValueChange = { feedbackText = it },
-                    label = { Text("请输入反馈内容", color = TextSecondary) },
-                    placeholder = { Text("描述你的问题或建议…", color = TextTertiary) },
+                    label = { Text("请输入反馈内容", color = InkSecondary) },
+                    placeholder = { Text("描述你的问题或建议…", color = InkMuted) },
                     minLines = 4,
                     maxLines = 6,
                     shape = RoundedCornerShape(12.dp),
                     colors = OutlinedTextFieldDefaults.colors(
                         focusedBorderColor = NeonBlue,
-                        unfocusedBorderColor = DarkBorder,
+                        unfocusedBorderColor = PaperBorder,
                         focusedLabelColor = NeonBlue,
-                        unfocusedLabelColor = TextSecondary,
+                        unfocusedLabelColor = InkSecondary,
                         cursorColor = NeonBlue,
-                        focusedTextColor = TextPrimary,
-                        unfocusedTextColor = TextPrimary,
-                        focusedContainerColor = DarkSurface,
-                        unfocusedContainerColor = DarkSurface
+                        focusedTextColor = InkPrimary,
+                        unfocusedTextColor = InkPrimary,
+                        focusedContainerColor = PaperSurface,
+                        unfocusedContainerColor = PaperSurface
                     ),
                     modifier = Modifier.fillMaxWidth()
                 )

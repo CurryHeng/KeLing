@@ -4,12 +4,12 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 /**
- * 用户角色类型
+ * 用户角色类型（应用仅使用学生端）
  */
 enum class UserRole {
-    STUDENT,    // 学生
-    TEACHER,    // 教师
-    PARENT      // 家长
+    STUDENT,
+    @Suppress("unused") TEACHER,
+    @Suppress("unused") PARENT
 }
 
 /**
@@ -37,6 +37,8 @@ data class User(
     val grade: String? = null,
     val email: String? = null,
     val phone: String? = null,
+    /** 密码哈希（注册时设置，用于登录校验） */
+    val passwordHash: String? = null,
     val privacyLevel: PrivacyLevel = PrivacyLevel.FRIENDS,
     val createdAt: Long = System.currentTimeMillis(),
     val lastLoginAt: Long = System.currentTimeMillis()

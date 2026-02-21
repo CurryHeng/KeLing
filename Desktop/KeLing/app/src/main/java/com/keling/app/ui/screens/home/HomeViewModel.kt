@@ -10,6 +10,7 @@ import com.keling.app.data.model.TaskType
 import com.keling.app.data.model.TaskActionType
 import com.keling.app.data.remote.ChatRequest
 import com.keling.app.data.remote.KelingApiService
+import com.keling.app.data.repository.CheckInRepository
 import com.keling.app.data.repository.CourseRepository
 import com.keling.app.data.repository.TaskRepository
 import com.keling.app.data.repository.UserRepository
@@ -18,6 +19,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -44,6 +47,7 @@ class HomeViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val taskRepository: TaskRepository,
     private val courseRepository: CourseRepository,
+    private val checkInRepository: CheckInRepository,
     private val kelingApiService: KelingApiService
 ) : ViewModel() {
     
@@ -98,15 +102,17 @@ class HomeViewModel @Inject constructor(
                 // 确保当日预置日常任务已生成
                 taskRepository.ensureDailyTasksForToday(grade)
 
-                // 组合任务流与学习时长流，实时刷新首页信息
+                // 组合任务流、学习时长流与签到连续天数流（与登录用户绑定）
                 val tasksFlow = taskRepository.getTasksForGrade(grade)
                 val minutesFlow = taskRepository.getTodayStudyMinutes()
+                val streakFlow = user?.id?.let { checkInRepository.getStreak(it) } ?: flowOf(0)
 
                 tasksFlow
-                    .combine(minutesFlow) { tasks, todayMinutes ->
-                        Pair(tasks, todayMinutes)
+                    .combine(minutesFlow) { t, m -> Pair(t, m) }
+                    .combine(streakFlow) { (tasks, todayMinutes), streak ->
+                        Triple(tasks, todayMinutes, streak)
                     }
-                    .collect { (allTasks, todayMinutes) ->
+                    .collect { (allTasks, todayMinutes, streak) ->
                         val (startOfDay, endOfDay) = todayBounds()
                         // 今日任务：当日生成的日常任务 + 所有未完成的挑战任务
                         val todayTasks = allTasks.filter { task ->
@@ -125,7 +131,7 @@ class HomeViewModel @Inject constructor(
                                 level = 1,
                                 experience = 0,
                                 maxExperience = 1000,
-                                streak = 0,
+                                streak = streak,
                                 todayTaskCount = todayTasks.size,
                                 completedTaskCount = completedToday,
                                 todayStudyMinutes = todayMinutes,

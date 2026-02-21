@@ -11,6 +11,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.keling.app.data.model.PrivacyLevel
@@ -36,20 +37,20 @@ fun PrivacySettingsScreen(
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        containerColor = DarkBackground
+        containerColor = PaperBackground
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .background(DarkBackground)
+                .background(PaperBackground)
         ) {
             TopAppBar(
                 title = {
                     Text(
                         text = "隐私设置",
                         style = MaterialTheme.typography.titleLarge,
-                        color = TextPrimary
+                        color = InkPrimary
                     )
                 },
                 navigationIcon = {
@@ -57,12 +58,12 @@ fun PrivacySettingsScreen(
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "返回",
-                            tint = TextPrimary
+                            tint = InkPrimary
                         )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = DarkBackground
+                    containerColor = PaperBackground
                 )
             )
 
@@ -76,9 +77,9 @@ fun PrivacySettingsScreen(
                 Text(
                     text = "资料可见性",
                     style = MaterialTheme.typography.titleMedium,
-                    color = TextPrimary
+                    color = InkPrimary
                 )
-                NeonCard(glowColor = DarkBorder) {
+                NeonCard(glowColor = PaperBorder) {
                     Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                         listOf(
                             PrivacyLevel.PUBLIC to "公开",
@@ -97,14 +98,15 @@ fun PrivacySettingsScreen(
                                     onClick = { viewModel.setPrivacyLevel(level) },
                                     colors = RadioButtonDefaults.colors(
                                         selectedColor = NeonBlue,
-                                        unselectedColor = TextTertiary
+                                        unselectedColor = InkMuted
                                     )
                                 )
                                 Spacer(modifier = Modifier.width(12.dp))
                                 Text(
                                     text = label,
                                     style = MaterialTheme.typography.bodyLarge,
-                                    color = TextPrimary
+                                    fontWeight = FontWeight.Bold,
+                                    color = InkPrimary
                                 )
                             }
                         }
@@ -114,9 +116,9 @@ fun PrivacySettingsScreen(
                 Text(
                     text = "学习记录",
                     style = MaterialTheme.typography.titleMedium,
-                    color = TextPrimary
+                    color = InkPrimary
                 )
-                NeonCard(glowColor = DarkBorder) {
+                NeonCard(glowColor = PaperBorder) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
@@ -125,12 +127,13 @@ fun PrivacySettingsScreen(
                             Text(
                                 text = "学习记录对他人可见",
                                 style = MaterialTheme.typography.bodyLarge,
-                                color = TextPrimary
+                                fontWeight = FontWeight.Bold,
+                                color = InkPrimary
                             )
                             Text(
                                 text = "关闭后他人无法看到你的学习时长与完成情况",
                                 style = MaterialTheme.typography.bodySmall,
-                                color = TextSecondary
+                                color = InkSecondary
                             )
                         }
                         Switch(
@@ -139,8 +142,8 @@ fun PrivacySettingsScreen(
                             colors = SwitchDefaults.colors(
                                 checkedThumbColor = NeonBlue,
                                 checkedTrackColor = NeonBlue.copy(alpha = 0.3f),
-                                uncheckedThumbColor = TextTertiary,
-                                uncheckedTrackColor = DarkBorder
+                                uncheckedThumbColor = InkMuted,
+                                uncheckedTrackColor = PaperBorder
                             )
                         )
                     }

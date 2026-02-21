@@ -11,10 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.keling.app.ui.theme.DarkBackground
+import com.keling.app.ui.theme.PaperBackground
 import com.keling.app.ui.theme.NeonBlue
 import com.keling.app.ui.theme.NeonGreen
-import com.keling.app.ui.theme.TextPrimary
+import com.keling.app.ui.theme.InkPrimary
 import dagger.hilt.android.lifecycle.HiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -57,36 +57,36 @@ fun FocusScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("专注学习", color = TextPrimary) },
+                title = { Text("专注学习", color = InkPrimary) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "返回",
-                            tint = TextPrimary
+                            tint = InkPrimary
                         )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = DarkBackground
+                    containerColor = PaperBackground
                 )
             )
         },
-        containerColor = DarkBackground
+        containerColor = PaperBackground
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
                 .padding(24.dp)
-                .background(DarkBackground),
+                .background(PaperBackground),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
             Text(
                 text = "专注计时",
                 style = MaterialTheme.typography.titleMedium,
-                color = TextPrimary
+                color = InkPrimary
             )
             Spacer(modifier = Modifier.height(24.dp))
             Text(

@@ -11,47 +11,49 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.keling.app.ui.theme.*
 import kotlinx.coroutines.delay
 
-@Suppress("UNUSED_PARAMETER")
 @Composable
 fun SplashScreen(
     onNavigateToLogin: () -> Unit,
-    onNavigateToHome: () -> Unit
+    onNavigateToHome: () -> Unit,
+    viewModel: SplashViewModel = hiltViewModel()
 ) {
+    val splashState by viewModel.uiState.collectAsState()
     var startAnimation by remember { mutableStateOf(false) }
     
-    // 缩放动画
+    // 入场缩放 - 修仙式浮现
     val scale by animateFloatAsState(
-        targetValue = if (startAnimation) 1f else 0.5f,
+        targetValue = if (startAnimation) 1f else 0.6f,
         animationSpec = tween(
-            durationMillis = 800,
+            durationMillis = 1100,
             easing = FastOutSlowInEasing
         ),
         label = "scale"
     )
     
-    // 透明度动画
     val alpha by animateFloatAsState(
         targetValue = if (startAnimation) 1f else 0f,
         animationSpec = tween(
-            durationMillis = 800,
+            durationMillis = 1000,
             easing = FastOutSlowInEasing
         ),
         label = "alpha"
     )
     
-    // 光晕呼吸动画
+    // 古风金朱光晕呼吸
     val infiniteTransition = rememberInfiniteTransition(label = "glow")
     val glowAlpha by infiniteTransition.animateFloat(
-        initialValue = 0.3f,
-        targetValue = 0.8f,
+        initialValue = 0.25f,
+        targetValue = 0.65f,
         animationSpec = infiniteRepeatable(
-            animation = tween(1500, easing = FastOutSlowInEasing),
+            animation = tween(2000, easing = FastOutSlowInEasing),
             repeatMode = RepeatMode.Reverse
         ),
         label = "glowAlpha"
@@ -59,17 +61,23 @@ fun SplashScreen(
     
     LaunchedEffect(Unit) {
         startAnimation = true
-        delay(2500) // 等待动画完成；TODO: 已登录则 onNavigateToHome() 否则 onNavigateToLogin()
-        onNavigateToLogin()
+        delay(2500)
+    }
+    LaunchedEffect(splashState.isLoggedIn) {
+        when (splashState.isLoggedIn) {
+            true -> onNavigateToHome()
+            false -> onNavigateToLogin()
+            null -> { }
+        }
     }
     
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(DarkBackground),
+            .background(PaperBackground),
         contentAlignment = Alignment.Center
     ) {
-        // 背景渐变光效
+        // 古风金朱光效
         Box(
             modifier = Modifier
                 .size(300.dp)
@@ -77,9 +85,9 @@ fun SplashScreen(
                 .background(
                     brush = Brush.radialGradient(
                         colors = listOf(
-                            NeonBlue.copy(alpha = 0.3f),
-                            NeonPurple.copy(alpha = 0.2f),
-                            DarkBackground
+                            NeonGold.copy(alpha = 0.25f),
+                            NeonBlue.copy(alpha = 0.2f),
+                            PaperBackground
                         )
                     )
                 )
@@ -91,13 +99,13 @@ fun SplashScreen(
                 .alpha(alpha),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // Logo
+            // Logo - 朱砂到金
             Box(
                 modifier = Modifier
                     .size(120.dp)
                     .background(
                         brush = Brush.linearGradient(
-                            colors = listOf(NeonBlue, NeonPurple, NeonPink)
+                            colors = listOf(NeonBlue, NeonPurple, NeonGold)
                         ),
                         shape = androidx.compose.foundation.shape.RoundedCornerShape(24.dp)
                     ),
@@ -107,7 +115,7 @@ fun SplashScreen(
                     text = "课灵",
                     fontSize = 36.sp,
                     fontWeight = FontWeight.Bold,
-                    color = DarkBackground
+                    color = Color.White
                 )
             }
             
@@ -118,7 +126,7 @@ fun SplashScreen(
                 text = "课灵",
                 style = MaterialTheme.typography.displaySmall,
                 fontWeight = FontWeight.Bold,
-                color = TextPrimary
+                color = InkPrimary
             )
             
             Spacer(modifier = Modifier.height(8.dp))
@@ -127,7 +135,7 @@ fun SplashScreen(
             Text(
                 text = "游戏化学习，让知识更有趣",
                 style = MaterialTheme.typography.bodyLarge,
-                color = TextSecondary
+                color = InkSecondary
             )
         }
         
@@ -135,7 +143,7 @@ fun SplashScreen(
         Text(
             text = "v1.0.0",
             style = MaterialTheme.typography.bodySmall,
-            color = TextTertiary,
+            color = InkMuted,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 32.dp)

@@ -24,8 +24,10 @@ import com.keling.app.ui.screens.courses.CourseDetailScreen
 import com.keling.app.ui.screens.courses.CoursesScreen
 import com.keling.app.ui.screens.knowledge.KnowledgeGraphScreen
 import com.keling.app.ui.screens.knowledge.KnowledgePracticeScreen
+import com.keling.app.ui.screens.checkin.CheckInScreen
 import com.keling.app.ui.screens.home.HomeScreen
 import com.keling.app.ui.screens.login.LoginScreen
+import com.keling.app.ui.screens.login.RegisterScreen
 import com.keling.app.ui.screens.profile.ProfileScreen
 import com.keling.app.ui.screens.settings.AccessibilitySettingsScreen
 import com.keling.app.ui.screens.settings.AccountSecurityScreen
@@ -42,9 +44,12 @@ import com.keling.app.ui.screens.tasks.TaskExecutionScreen
 import com.keling.app.ui.screens.tasks.TasksScreen
 import com.keling.app.ui.screens.focus.FocusScreen
 import com.keling.app.ui.theme.*
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
-fun KelingNavHost() {
+fun KelingNavHost(
+    authViewModel: AuthViewModel = hiltViewModel()
+) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
@@ -57,7 +62,7 @@ fun KelingNavHost() {
     }
 
     Scaffold(
-        containerColor = DarkBackground,
+        containerColor = PaperBackground,
         bottomBar = {
             if (showBottomBar) {
                 KelingBottomBar(
@@ -99,7 +104,7 @@ fun KelingNavHost() {
                         }
                     },
                     onNavigateToHome = {
-                        navController.navigate(Screen.Home.route) {
+                        navController.navigate(Screen.CheckIn.route) {
                             popUpTo(Screen.Splash.route) { inclusive = true }
                         }
                     }
@@ -110,9 +115,38 @@ fun KelingNavHost() {
             composable(Screen.Login.route) {
                 LoginScreen(
                     onLoginSuccess = {
-                        navController.navigate(Screen.Home.route) {
+                        navController.navigate(Screen.CheckIn.route) {
                             popUpTo(Screen.Login.route) { inclusive = true }
                         }
+                    },
+                    onNavigateToRegister = {
+                        navController.navigate(Screen.Register.route)
+                    }
+                )
+            }
+
+            // 签到页（当天登录/注册后若未签到则先进入，签到后进首页）
+            composable(Screen.CheckIn.route) {
+                CheckInScreen(
+                    onDone = {
+                        navController.navigate(Screen.Home.route) {
+                            popUpTo(Screen.CheckIn.route) { inclusive = true }
+                        }
+                    }
+                )
+            }
+
+            // 注册页
+            composable(Screen.Register.route) {
+                RegisterScreen(
+                    onRegisterSuccess = {
+                        navController.navigate(Screen.CheckIn.route) {
+                            popUpTo(Screen.Login.route) { inclusive = true }
+                            popUpTo(Screen.Register.route) { inclusive = true }
+                        }
+                    },
+                    onBackToLogin = {
+                        navController.popBackStack()
                     }
                 )
             }
@@ -292,6 +326,7 @@ fun KelingNavHost() {
                     onNavigateToAbout = { navController.navigate(Screen.About.route) },
                     onNavigateToHelp = { navController.navigate(Screen.HelpFeedback.route) },
                     onLogout = {
+                        authViewModel.logout()
                         navController.navigate(Screen.Login.route) {
                             popUpTo(0) { inclusive = true }
                         }
@@ -350,8 +385,8 @@ fun KelingBottomBar(
     currentDestination: androidx.navigation.NavDestination?
 ) {
     NavigationBar(
-        containerColor = DarkSurface,
-        contentColor = TextPrimary
+        containerColor = PaperSurface,
+        contentColor = InkPrimary
     ) {
         bottomNavItems.forEach { screen ->
             val selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true
@@ -377,8 +412,8 @@ fun KelingBottomBar(
                 colors = NavigationBarItemDefaults.colors(
                     selectedIconColor = NeonBlue,
                     selectedTextColor = NeonBlue,
-                    unselectedIconColor = TextSecondary,
-                    unselectedTextColor = TextSecondary,
+                    unselectedIconColor = InkSecondary,
+                    unselectedTextColor = InkSecondary,
                     indicatorColor = NeonBlue.copy(alpha = 0.15f)
                 )
             )

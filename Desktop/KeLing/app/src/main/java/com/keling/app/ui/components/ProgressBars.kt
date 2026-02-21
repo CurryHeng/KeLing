@@ -21,20 +21,20 @@ import androidx.compose.ui.unit.dp
 import com.keling.app.ui.theme.*
 
 /**
- * 霓虹进度条 - 带发光效果
+ * 进度条 - 古风朱砂/金渐变，流动动画
  */
 @Composable
 fun NeonProgressBar(
     progress: Float,
     modifier: Modifier = Modifier,
     color: Color = NeonBlue,
-    backgroundColor: Color = DarkBorder,
+    backgroundColor: Color = PaperBorder,
     height: Dp = 8.dp,
     animated: Boolean = true
 ) {
     val animatedProgress by animateFloatAsState(
         targetValue = progress.coerceIn(0f, 1f),
-        animationSpec = if (animated) tween(durationMillis = 500, easing = FastOutSlowInEasing)
+        animationSpec = if (animated) tween(durationMillis = 700, easing = FastOutSlowInEasing)
         else snap(),
         label = "progress"
     )
@@ -73,7 +73,7 @@ fun CircularNeonProgress(
     size: Dp = 120.dp,
     strokeWidth: Dp = 12.dp,
     color: Color = NeonBlue,
-    backgroundColor: Color = DarkBorder,
+    backgroundColor: Color = PaperBorder,
     showPercentage: Boolean = true
 ) {
     val animatedProgress by animateFloatAsState(
@@ -177,7 +177,7 @@ fun ExperienceBar(
                     Text(
                         text = "$level",
                         style = MaterialTheme.typography.titleMedium,
-                        color = DarkBackground
+                        color = InkPrimary
                     )
                 }
                 Spacer(modifier = Modifier.width(8.dp))
@@ -191,7 +191,7 @@ fun ExperienceBar(
             Text(
                 text = "$currentExp / $maxExp XP",
                 style = MaterialTheme.typography.bodySmall,
-                color = TextSecondary
+                color = InkSecondary
             )
         }
         
@@ -245,7 +245,7 @@ fun RadarChart(
                 path.close()
                 drawPath(
                     path = path,
-                    color = DarkBorder,
+                    color = PaperBorder,
                     style = Stroke(width = 1.dp.toPx())
                 )
             }
@@ -256,7 +256,7 @@ fun RadarChart(
                 val endX = centerX + (radius * Math.cos(angle)).toFloat()
                 val endY = centerY + (radius * Math.sin(angle)).toFloat()
                 drawLine(
-                    color = DarkBorder,
+                    color = PaperBorder,
                     start = Offset(centerX, centerY),
                     end = Offset(endX, endY),
                     strokeWidth = 1.dp.toPx()

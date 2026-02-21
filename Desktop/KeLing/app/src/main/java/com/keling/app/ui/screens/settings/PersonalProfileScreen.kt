@@ -45,20 +45,20 @@ fun PersonalProfileScreen(
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        containerColor = DarkBackground
+        containerColor = PaperBackground
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .background(DarkBackground)
+                .background(PaperBackground)
         ) {
             TopAppBar(
                 title = {
                     Text(
                         text = "个人资料",
                         style = MaterialTheme.typography.titleLarge,
-                        color = TextPrimary
+                        color = InkPrimary
                     )
                 },
                 navigationIcon = {
@@ -66,12 +66,12 @@ fun PersonalProfileScreen(
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "返回",
-                            tint = TextPrimary
+                            tint = InkPrimary
                         )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = DarkBackground
+                    containerColor = PaperBackground
                 )
             )
 
@@ -80,7 +80,7 @@ fun PersonalProfileScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text("未登录", color = TextSecondary)
+                    Text("未登录", color = InkSecondary)
                 }
                 return@Scaffold
             }
@@ -102,20 +102,20 @@ fun PersonalProfileScreen(
                     Surface(
                         modifier = Modifier.size(96.dp),
                         shape = CircleShape,
-                        color = DarkSurface
+                        color = PaperSurface
                     ) {
                         Box(contentAlignment = Alignment.Center) {
                             Icon(
                                 imageVector = Icons.Default.Person,
                                 contentDescription = null,
-                                tint = TextTertiary,
+                                tint = InkMuted,
                                 modifier = Modifier.size(48.dp)
                             )
                         }
                     }
                 }
 
-                NeonCard(glowColor = DarkBorder) {
+                NeonCard(glowColor = PaperBorder) {
                     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         ProfileTextField(
                             value = uiState.realName,
@@ -182,7 +182,7 @@ private fun ProfileTextField(
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        label = { Text(label, color = TextSecondary) },
+        label = { Text(label, color = InkSecondary) },
         leadingIcon = {
             Icon(
                 imageVector = icon,
@@ -195,14 +195,14 @@ private fun ProfileTextField(
         keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(keyboardType = keyboardType),
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = NeonBlue,
-            unfocusedBorderColor = DarkBorder,
+            unfocusedBorderColor = PaperBorder,
             focusedLabelColor = NeonBlue,
-            unfocusedLabelColor = TextSecondary,
+            unfocusedLabelColor = InkSecondary,
             cursorColor = NeonBlue,
-            focusedTextColor = TextPrimary,
-            unfocusedTextColor = TextPrimary,
-            focusedContainerColor = DarkSurface,
-            unfocusedContainerColor = DarkSurface
+            focusedTextColor = InkPrimary,
+            unfocusedTextColor = InkPrimary,
+            focusedContainerColor = PaperSurface,
+            unfocusedContainerColor = PaperSurface
         ),
         modifier = Modifier.fillMaxWidth()
     )

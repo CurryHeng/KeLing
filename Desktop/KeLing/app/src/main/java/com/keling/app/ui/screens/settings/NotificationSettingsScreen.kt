@@ -10,6 +10,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.keling.app.ui.components.NeonCard
 import com.keling.app.ui.theme.*
@@ -28,14 +29,14 @@ fun NotificationSettingsScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(DarkBackground)
+            .background(PaperBackground)
     ) {
         TopAppBar(
             title = {
                 Text(
                     text = "通知设置",
                     style = MaterialTheme.typography.titleLarge,
-                    color = TextPrimary
+                    color = InkPrimary
                 )
             },
             navigationIcon = {
@@ -43,12 +44,12 @@ fun NotificationSettingsScreen(
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = "返回",
-                        tint = TextPrimary
+                        tint = InkPrimary
                     )
                 }
             },
             colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = DarkBackground
+                containerColor = PaperBackground
             )
         )
 
@@ -62,9 +63,9 @@ fun NotificationSettingsScreen(
             Text(
                 text = "推送与提醒",
                 style = MaterialTheme.typography.titleMedium,
-                color = TextPrimary
+                color = InkPrimary
             )
-            NeonCard(glowColor = DarkBorder) {
+            NeonCard(glowColor = PaperBorder) {
                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     NotificationSwitch(
                         title = "推送通知",
@@ -90,9 +91,9 @@ fun NotificationSettingsScreen(
             Text(
                 text = "提醒类型",
                 style = MaterialTheme.typography.titleMedium,
-                color = TextPrimary
+                color = InkPrimary
             )
-            NeonCard(glowColor = DarkBorder) {
+            NeonCard(glowColor = PaperBorder) {
                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     NotificationSwitch(
                         title = "任务提醒",
@@ -131,12 +132,13 @@ private fun NotificationSwitch(
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyLarge,
-                color = TextPrimary
+                fontWeight = FontWeight.Bold,
+                color = InkPrimary
             )
             Text(
                 text = subtitle,
                 style = MaterialTheme.typography.bodySmall,
-                color = TextSecondary
+                color = InkSecondary
             )
         }
         Switch(
@@ -145,8 +147,8 @@ private fun NotificationSwitch(
             colors = SwitchDefaults.colors(
                 checkedThumbColor = NeonBlue,
                 checkedTrackColor = NeonBlue.copy(alpha = 0.3f),
-                uncheckedThumbColor = TextTertiary,
-                uncheckedTrackColor = DarkBorder
+                uncheckedThumbColor = InkMuted,
+                uncheckedTrackColor = PaperBorder
             )
         )
     }

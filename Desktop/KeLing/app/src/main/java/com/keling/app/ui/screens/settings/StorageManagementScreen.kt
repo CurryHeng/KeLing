@@ -11,6 +11,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import kotlinx.coroutines.launch
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.keling.app.ui.components.NeonButton
 import com.keling.app.ui.components.NeonCard
@@ -27,20 +28,20 @@ fun StorageManagementScreen(
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        containerColor = DarkBackground
+        containerColor = PaperBackground
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .background(DarkBackground)
+                .background(PaperBackground)
         ) {
             TopAppBar(
                 title = {
                     Text(
                         text = "存储管理",
                         style = MaterialTheme.typography.titleLarge,
-                        color = TextPrimary
+                        color = InkPrimary
                     )
                 },
                 navigationIcon = {
@@ -48,12 +49,12 @@ fun StorageManagementScreen(
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "返回",
-                            tint = TextPrimary
+                            tint = InkPrimary
                         )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = DarkBackground
+                    containerColor = PaperBackground
                 )
             )
 
@@ -67,9 +68,9 @@ fun StorageManagementScreen(
                 Text(
                     text = "缓存",
                     style = MaterialTheme.typography.titleMedium,
-                    color = TextPrimary
+                    color = InkPrimary
                 )
-                NeonCard(glowColor = DarkBorder) {
+                NeonCard(glowColor = PaperBorder) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
@@ -86,19 +87,21 @@ fun StorageManagementScreen(
                                 Text(
                                     text = "应用缓存",
                                     style = MaterialTheme.typography.bodyLarge,
-                                    color = TextPrimary
+                                    fontWeight = FontWeight.Bold,
+                                    color = InkPrimary
                                 )
                                 Text(
                                     text = "图片、临时文件等",
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = TextSecondary
+                                    color = InkSecondary
                                 )
                             }
                         }
                         Text(
                             text = cacheSize,
                             style = MaterialTheme.typography.bodyLarge,
-                            color = TextSecondary
+                            fontWeight = FontWeight.Bold,
+                            color = InkSecondary
                         )
                     }
                 }

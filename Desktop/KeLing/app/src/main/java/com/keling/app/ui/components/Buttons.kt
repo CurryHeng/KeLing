@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.keling.app.ui.theme.*
 
 /**
- * 霓虹按钮 - 主要操作按钮
+ * 主按钮 - 古风朱砂/金渐变，强按压反馈
  */
 @Composable
 fun NeonButton(
@@ -38,9 +38,18 @@ fun NeonButton(
     val isPressed by interactionSource.collectIsPressedAsState()
     
     val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.95f else 1f,
-        animationSpec = spring(stiffness = Spring.StiffnessHigh),
+        targetValue = if (isPressed) 0.92f else 1f,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessMedium
+        ),
         label = "buttonScale"
+    )
+    
+    val borderAlpha by animateFloatAsState(
+        targetValue = if (isPressed) 1f else 0.7f,
+        animationSpec = tween(durationMillis = 150),
+        label = "borderGlow"
     )
     
     Box(
@@ -51,20 +60,20 @@ fun NeonButton(
             .background(
                 brush = if (enabled) {
                     Brush.horizontalGradient(
-                        colors = listOf(color, color.copy(alpha = 0.8f))
+                        colors = listOf(color, NeonPurple.copy(alpha = 0.9f))
                     )
                 } else {
                     Brush.horizontalGradient(
-                        colors = listOf(TextDisabled, TextDisabled)
+                        colors = listOf(InkMuted, InkMuted)
                     )
                 }
             )
             .border(
-                width = 1.dp,
+                width = if (isPressed) 2.dp else 1.dp,
                 brush = Brush.horizontalGradient(
                     colors = listOf(
-                        color.copy(alpha = 0.8f),
-                        color.copy(alpha = 0.4f)
+                        NeonGold.copy(alpha = borderAlpha * 0.6f),
+                        color.copy(alpha = borderAlpha)
                     )
                 ),
                 shape = RoundedCornerShape(26.dp)
@@ -80,21 +89,21 @@ fun NeonButton(
         if (isLoading) {
             CircularProgressIndicator(
                 modifier = Modifier.size(24.dp),
-                color = DarkBackground,
+                color = Color.White,
                 strokeWidth = 2.dp
             )
         } else {
             Text(
                 text = text,
                 style = MaterialTheme.typography.labelLarge,
-                color = DarkBackground
+                color = Color.White
             )
         }
     }
 }
 
 /**
- * 轮廓按钮 - 次要操作
+ * 轮廓按钮 - 次要操作，金边高亮
  */
 @Composable
 fun NeonOutlinedButton(
@@ -108,8 +117,11 @@ fun NeonOutlinedButton(
     val isPressed by interactionSource.collectIsPressedAsState()
     
     val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.95f else 1f,
-        animationSpec = spring(stiffness = Spring.StiffnessHigh),
+        targetValue = if (isPressed) 0.94f else 1f,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessMedium
+        ),
         label = "buttonScale"
     )
     
@@ -121,7 +133,7 @@ fun NeonOutlinedButton(
             .background(Color.Transparent)
             .border(
                 width = 2.dp,
-                color = if (enabled) color else TextDisabled,
+                color = if (enabled) color else InkMuted,
                 shape = RoundedCornerShape(26.dp)
             )
             .clickable(
@@ -135,13 +147,13 @@ fun NeonOutlinedButton(
         Text(
             text = text,
             style = MaterialTheme.typography.labelLarge,
-            color = if (enabled) color else TextDisabled
+            color = if (enabled) color else InkMuted
         )
     }
 }
 
 /**
- * 图标按钮 - 带霓虹效果
+ * 图标按钮 - 古风金边，强按压缩放
  */
 @Composable
 fun NeonIconButton(
@@ -156,8 +168,11 @@ fun NeonIconButton(
     val isPressed by interactionSource.collectIsPressedAsState()
     
     val scale by animateFloatAsState(
-        targetValue = if (isPressed) 0.9f else 1f,
-        animationSpec = spring(stiffness = Spring.StiffnessHigh),
+        targetValue = if (isPressed) 0.85f else 1f,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioMediumBouncy,
+            stiffness = Spring.StiffnessMedium
+        ),
         label = "iconScale"
     )
     
@@ -189,30 +204,29 @@ fun NeonIconButton(
 }
 
 /**
- * 浮动操作按钮 - AI助手入口
+ * 浮动操作按钮 - AI助手入口，古风金朱呼吸光
  */
 @Composable
 fun AIFloatingButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    // 呼吸动画
     val infiniteTransition = rememberInfiniteTransition(label = "breathing")
     val scale by infiniteTransition.animateFloat(
         initialValue = 1f,
-        targetValue = 1.1f,
+        targetValue = 1.12f,
         animationSpec = infiniteRepeatable(
-            animation = tween(1500, easing = FastOutSlowInEasing),
+            animation = tween(2000, easing = FastOutSlowInEasing),
             repeatMode = RepeatMode.Reverse
         ),
         label = "breathingScale"
     )
     
     val glowAlpha by infiniteTransition.animateFloat(
-        initialValue = 0.3f,
-        targetValue = 0.6f,
+        initialValue = 0.25f,
+        targetValue = 0.55f,
         animationSpec = infiniteRepeatable(
-            animation = tween(1500, easing = FastOutSlowInEasing),
+            animation = tween(2000, easing = FastOutSlowInEasing),
             repeatMode = RepeatMode.Reverse
         ),
         label = "glowAlpha"
@@ -224,14 +238,14 @@ fun AIFloatingButton(
             .scale(scale),
         contentAlignment = Alignment.Center
     ) {
-        // 外层发光
         Box(
             modifier = Modifier
                 .size(64.dp)
                 .background(
                     brush = Brush.radialGradient(
                         colors = listOf(
-                            NeonPurple.copy(alpha = glowAlpha),
+                            NeonGold.copy(alpha = glowAlpha),
+                            NeonBlue.copy(alpha = glowAlpha * 0.5f),
                             Color.Transparent
                         )
                     ),
@@ -239,18 +253,17 @@ fun AIFloatingButton(
                 )
         )
         
-        // 按钮本体
         FloatingActionButton(
             onClick = onClick,
-            containerColor = DarkCard,
-            contentColor = NeonPurple,
+            containerColor = PaperSurface,
+            contentColor = NeonGold,
             shape = CircleShape,
             modifier = Modifier
                 .size(56.dp)
                 .border(
                     width = 2.dp,
                     brush = Brush.linearGradient(
-                        colors = listOf(NeonBlue, NeonPurple, NeonPink)
+                        colors = listOf(NeonBlue, NeonGold, NeonPurple)
                     ),
                     shape = CircleShape
                 )
@@ -258,14 +271,14 @@ fun AIFloatingButton(
             Text(
                 text = "灵",
                 style = MaterialTheme.typography.titleLarge,
-                color = NeonPurple
+                color = NeonGold
             )
         }
     }
 }
 
 /**
- * 选项卡组件
+ * 选项卡 - 选中金底朱砂字，切换动画
  */
 @Composable
 fun NeonTabRow(
@@ -278,23 +291,33 @@ fun NeonTabRow(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .background(DarkSurface, RoundedCornerShape(12.dp))
+            .background(PaperSurface, RoundedCornerShape(12.dp))
             .padding(4.dp),
         horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         tabs.forEachIndexed { index, title ->
             val isSelected = index == selectedIndex
             
+            val tabScale by animateFloatAsState(
+                targetValue = if (isSelected) 1.02f else 1f,
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioMediumBouncy,
+                    stiffness = Spring.StiffnessLow
+                ),
+                label = "tabScale"
+            )
+            
             Box(
                 modifier = Modifier
                     .weight(1f)
+                    .scale(tabScale)
                     .clip(RoundedCornerShape(8.dp))
                     .background(
-                        if (isSelected) color.copy(alpha = 0.2f) else Color.Transparent
+                        if (isSelected) NeonPurple.copy(alpha = 0.25f) else Color.Transparent
                     )
                     .border(
-                        width = if (isSelected) 1.dp else 0.dp,
-                        color = if (isSelected) color else Color.Transparent,
+                        width = if (isSelected) 1.5.dp else 0.dp,
+                        color = if (isSelected) NeonGold.copy(alpha = 0.8f) else Color.Transparent,
                         shape = RoundedCornerShape(8.dp)
                     )
                     .clickable { onTabSelected(index) }
@@ -304,7 +327,7 @@ fun NeonTabRow(
                 Text(
                     text = title,
                     style = MaterialTheme.typography.labelMedium,
-                    color = if (isSelected) color else TextSecondary
+                    color = if (isSelected) color else InkSecondary
                 )
             }
         }

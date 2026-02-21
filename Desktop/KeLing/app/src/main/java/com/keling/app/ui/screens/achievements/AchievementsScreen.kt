@@ -44,7 +44,7 @@ fun AchievementsScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(DarkBackground)
+            .background(PaperBackground)
             .statusBarsPadding()
     ) {
         // 顶部标题
@@ -52,7 +52,7 @@ fun AchievementsScreen() {
             text = "成就殿堂",
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
-            color = TextPrimary,
+            color = InkPrimary,
             modifier = Modifier.padding(16.dp)
         )
         
@@ -115,7 +115,7 @@ private fun AchievementStats(
                 Text(
                     text = "已解锁",
                     style = MaterialTheme.typography.labelSmall,
-                    color = TextSecondary
+                    color = InkSecondary
                 )
             }
             
@@ -123,7 +123,7 @@ private fun AchievementStats(
                 modifier = Modifier
                     .width(1.dp)
                     .height(40.dp)
-                    .background(DarkBorder)
+                    .background(PaperBorder)
             )
             
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -131,12 +131,12 @@ private fun AchievementStats(
                     text = "$total",
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold,
-                    color = TextSecondary
+                    color = InkSecondary
                 )
                 Text(
                     text = "总成就",
                     style = MaterialTheme.typography.labelSmall,
-                    color = TextSecondary
+                    color = InkSecondary
                 )
             }
             
@@ -144,7 +144,7 @@ private fun AchievementStats(
                 modifier = Modifier
                     .width(1.dp)
                     .height(40.dp)
-                    .background(DarkBorder)
+                    .background(PaperBorder)
             )
             
             CircularNeonProgress(
@@ -161,11 +161,11 @@ private fun AchievementStats(
 @Composable
 private fun AchievementItem(achievement: AchievementUi) {
     val rarityColor = when (achievement.rarity) {
-        "COMMON" -> TextSecondary
+        "COMMON" -> InkSecondary
         "RARE" -> NeonBlue
         "EPIC" -> NeonPurple
         "LEGENDARY" -> NeonGold
-        else -> TextSecondary
+        else -> InkSecondary
     }
     
     val infiniteTransition = rememberInfiniteTransition(label = "legendary")
@@ -188,7 +188,7 @@ private fun AchievementItem(achievement: AchievementUi) {
             .scale(scale)
             .alpha(alpha)
             .background(
-                color = DarkCard,
+                color = PaperSurface,
                 shape = RoundedCornerShape(16.dp)
             )
             .then(
@@ -226,7 +226,7 @@ private fun AchievementItem(achievement: AchievementUi) {
                     .size(48.dp)
                     .background(
                         color = if (achievement.isUnlocked) rarityColor.copy(alpha = 0.2f) 
-                               else DarkSurfaceVariant,
+                               else PaperSurfaceVariant,
                         shape = RoundedCornerShape(12.dp)
                     ),
                 contentAlignment = Alignment.Center
@@ -240,7 +240,7 @@ private fun AchievementItem(achievement: AchievementUi) {
                         else -> Icons.Default.EmojiEvents
                     },
                     contentDescription = null,
-                    tint = if (achievement.isUnlocked) rarityColor else TextTertiary,
+                    tint = if (achievement.isUnlocked) rarityColor else InkMuted,
                     modifier = Modifier.size(28.dp)
                 )
             }
@@ -251,7 +251,7 @@ private fun AchievementItem(achievement: AchievementUi) {
             Text(
                 text = achievement.name,
                 style = MaterialTheme.typography.labelSmall,
-                color = if (achievement.isUnlocked) TextPrimary else TextTertiary,
+                color = if (achievement.isUnlocked) InkPrimary else InkMuted,
                 textAlign = TextAlign.Center,
                 maxLines = 2
             )
@@ -273,7 +273,7 @@ private fun AchievementItem(achievement: AchievementUi) {
             Icon(
                 imageVector = Icons.Default.Lock,
                 contentDescription = null,
-                tint = TextTertiary.copy(alpha = 0.5f),
+                tint = InkMuted.copy(alpha = 0.5f),
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .size(16.dp)

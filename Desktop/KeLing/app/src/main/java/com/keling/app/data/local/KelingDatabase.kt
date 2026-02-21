@@ -4,6 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.keling.app.data.local.dao.*
+import com.keling.app.data.model.CheckIn
 import com.keling.app.data.model.*
 
 @Database(
@@ -23,9 +24,10 @@ import com.keling.app.data.model.*
         UserBadge::class,
         KnowledgePoint::class,
         KnowledgeRelation::class,
-        LearningRecord::class
+        LearningRecord::class,
+        CheckIn::class
     ],
-    version = 3,
+    version = 5,
     exportSchema = true
 )
 @TypeConverters(Converters::class)
@@ -35,4 +37,5 @@ abstract class KelingDatabase : RoomDatabase() {
     abstract fun taskDao(): TaskDao
     abstract fun achievementDao(): AchievementDao
     abstract fun knowledgeDao(): KnowledgeDao
+    abstract fun checkInDao(): CheckInDao
 }

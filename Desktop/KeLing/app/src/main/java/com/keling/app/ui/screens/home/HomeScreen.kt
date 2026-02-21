@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -15,11 +16,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.keling.app.ui.components.*
 import com.keling.app.ui.theme.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -38,29 +42,34 @@ fun HomeScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .background(DarkBackground),
-            contentPadding = PaddingValues(bottom = 80.dp)
+                .background(PaperBackground),
+            contentPadding = PaddingValues(
+                horizontal = KelingSpacing.horizontalPage,
+                vertical = KelingSpacing.verticalPage
+            )
         ) {
-            // 顶部问候区域
+            // 顶部：问候 + 日期 + 头像（参考图结构）
             item {
                 HomeHeader(
                     userName = uiState.userName,
+                    dateString = remember { formatHomeDate() },
                     level = uiState.level,
                     experience = uiState.experience,
                     maxExperience = uiState.maxExperience,
                     streak = uiState.streak
                 )
             }
-            
-            // 今日概览
+
+            // 学习计划大卡片：三格数据 + 平均进度 + 进度条
             item {
-                TodayOverview(
-                    todayTasks = uiState.todayTaskCount,
-                    completedTasks = uiState.completedTaskCount,
-                    studyMinutes = uiState.todayStudyMinutes
+                LearningPlanCard(
+                    todayTaskCount = uiState.todayTaskCount,
+                    completedTaskCount = uiState.completedTaskCount,
+                    studyMinutes = uiState.todayStudyMinutes,
+                    onLearnMore = onNavigateToCourses
                 )
             }
-            
+
             // 快速开始
             item {
                 QuickStartSection(
@@ -77,10 +86,10 @@ fun HomeScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 12.dp)
-                        .height(160.dp)
+                        .height(140.dp)
                 )
             }
-            
+
             // 今日任务
             item {
                 SectionHeader(title = "今日任务", actionText = "查看全部")
@@ -157,7 +166,7 @@ fun HomeScreen(
                                 Text(
                                     text = skill,
                                     style = MaterialTheme.typography.labelSmall,
-                                    color = TextSecondary
+                                    color = InkSecondary
                                 )
                                 Text(
                                     text = "${(value * 100).toInt()}%",
@@ -170,7 +179,7 @@ fun HomeScreen(
                 }
             }
             
-            item { Spacer(modifier = Modifier.height(24.dp)) }
+            item { Spacer(modifier = Modifier.height(80.dp)) }
         }
         
         // AI助手浮动按钮
@@ -183,9 +192,15 @@ fun HomeScreen(
     }
 }
 
+private fun formatHomeDate(): String {
+    val sdf = SimpleDateFormat("EEEE，M月d日", Locale.CHINESE)
+    return sdf.format(Date())
+}
+
 @Composable
 private fun HomeHeader(
     userName: String,
+    dateString: String,
     level: Int,
     experience: Int,
     maxExperience: Int,
@@ -194,58 +209,46 @@ private fun HomeHeader(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        NeonBlue.copy(alpha = 0.1f),
-                        DarkBackground
-                    )
-                )
-            )
             .statusBarsPadding()
-            .padding(16.dp)
+            .padding(horizontal = KelingSpacing.horizontalPage, vertical = KelingSpacing.verticalPage)
     ) {
+        // 一行：左侧问候+日期，右侧头像
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column {
+            Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = "你好，$userName",
+                    text = "你好，$userName 👋",
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
-                    color = TextPrimary
+                    color = InkPrimary
                 )
                 Spacer(modifier = Modifier.height(4.dp))
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        imageVector = Icons.Default.LocalFireDepartment,
-                        contentDescription = null,
-                        tint = NeonOrange,
-                        modifier = Modifier.size(16.dp)
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(
-                        text = "连续学习 $streak 天",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = NeonOrange
-                    )
-                }
+                Text(
+                    text = dateString,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = InkSecondary
+                )
             }
-            
-            // 通知按钮
-            IconButton(onClick = { }) {
-                Icon(
-                    imageVector = Icons.Default.Notifications,
-                    contentDescription = "通知",
-                    tint = TextPrimary
+            // 头像：圆形 + 首字或图标
+            Box(
+                modifier = Modifier
+                    .size(44.dp)
+                    .clip(CircleShape)
+                    .background(NeonBlue.copy(alpha = 0.2f)),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = userName.take(1).uppercase(),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = NeonBlue
                 )
             }
         }
-        
         Spacer(modifier = Modifier.height(16.dp))
-        
         // 经验值条
         ExperienceBar(
             currentExp = experience,
@@ -253,34 +256,177 @@ private fun HomeHeader(
             level = level,
             modifier = Modifier.fillMaxWidth()
         )
+        Row(
+            modifier = Modifier.padding(top = 6.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = Icons.Default.LocalFireDepartment,
+                contentDescription = null,
+                tint = NeonOrange,
+                modifier = Modifier.size(14.dp)
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+                text = "连续学习 $streak 天",
+                style = MaterialTheme.typography.labelSmall,
+                color = NeonOrange
+            )
+        }
+    }
+}
+
+/** 学习计划大卡片：三格数据 + 平均进度 + 进度条（参考设计图） */
+@Composable
+private fun LearningPlanCard(
+    todayTaskCount: Int,
+    completedTaskCount: Int,
+    studyMinutes: Int,
+    onLearnMore: () -> Unit
+) {
+    val averageProgress = if (todayTaskCount > 0) (completedTaskCount.toFloat() / todayTaskCount * 100).toInt() else 0
+    val upcomingCount = (todayTaskCount - completedTaskCount).coerceAtLeast(0)
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = KelingSpacing.horizontalPage, vertical = 8.dp)
+            .clip(RoundedCornerShape(20.dp))
+            .background(PaperSurface)
+            .padding(20.dp)
+    ) {
+        Column {
+            Text(
+                text = "学习计划",
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                color = InkPrimary
+            )
+            Spacer(modifier = Modifier.height(20.dp))
+            // 三格数据：总任务、已完成、待办
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                PlanStatItem(
+                    icon = Icons.Default.Assignment,
+                    value = todayTaskCount.toString(),
+                    label = "总任务",
+                    color = NeonGreen
+                )
+                PlanStatItem(
+                    icon = Icons.Default.CheckCircle,
+                    value = completedTaskCount.toString(),
+                    label = "已完成",
+                    color = NeonGreen
+                )
+                PlanStatItem(
+                    icon = Icons.Default.Schedule,
+                    value = upcomingCount.toString(),
+                    label = "待办",
+                    color = NeonGreen
+                )
+            }
+            Spacer(modifier = Modifier.height(24.dp))
+            // 平均进度 + 了解更多
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column {
+                    Text(
+                        text = "$averageProgress%",
+                        style = MaterialTheme.typography.headlineMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = InkPrimary
+                    )
+                    Text(
+                        text = "平均进度",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = InkSecondary
+                    )
+                }
+                TextButton(onClick = onLearnMore) {
+                    Icon(
+                        imageVector = Icons.Default.OpenInNew,
+                        contentDescription = null,
+                        modifier = Modifier.size(16.dp),
+                        tint = NeonBlue
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = "了解更多",
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = NeonBlue
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            // 今日进度条
+            Column {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "今日进度",
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = InkSecondary
+                    )
+                    Text(
+                        text = "$completedTaskCount / $todayTaskCount 任务 · ${studyMinutes} 分钟",
+                        style = MaterialTheme.typography.labelSmall,
+                        color = InkMuted
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                NeonProgressBar(
+                    progress = if (todayTaskCount > 0) completedTaskCount.toFloat() / todayTaskCount else 0f,
+                    color = NeonBlue,
+                    modifier = Modifier.fillMaxWidth(),
+                    height = 8.dp
+                )
+            }
+        }
     }
 }
 
 @Composable
-private fun TodayOverview(
-    todayTasks: Int,
-    completedTasks: Int,
-    studyMinutes: Int
+private fun PlanStatItem(
+    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    value: String,
+    label: String,
+    color: Color
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        StatCard(
-            title = "今日任务",
-            value = "$completedTasks/$todayTasks",
-            icon = Icons.Default.Assignment,
-            color = NeonBlue,
-            modifier = Modifier.weight(1f)
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Box(
+            modifier = Modifier
+                .size(44.dp)
+                .clip(CircleShape)
+                .background(color.copy(alpha = 0.15f)),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                tint = color,
+                modifier = Modifier.size(24.dp)
+            )
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = value,
+            style = MaterialTheme.typography.titleLarge,
+            fontWeight = FontWeight.Bold,
+            color = InkPrimary
         )
-        StatCard(
-            title = "学习时长",
-            value = "${studyMinutes}分钟",
-            icon = Icons.Default.Timer,
-            color = NeonGreen,
-            modifier = Modifier.weight(1f)
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+            color = InkSecondary
         )
     }
 }
@@ -311,7 +457,7 @@ private fun StatCard(
                 Text(
                     text = title,
                     style = MaterialTheme.typography.labelSmall,
-                    color = TextSecondary
+                    color = InkSecondary
                 )
                 Text(
                     text = value,
@@ -387,7 +533,7 @@ private fun QuickActionButton(
             Text(
                 text = label,
                 style = MaterialTheme.typography.labelMedium,
-                color = TextPrimary
+                color = InkPrimary
             )
         }
     }
@@ -433,7 +579,7 @@ private fun CampusPlanetEntry(
                 Text(
                     text = "探索论坛星球 · 实践星球，解锁校园任务与社交",
                     style = MaterialTheme.typography.bodySmall,
-                    color = TextSecondary
+                    color = InkSecondary
                 )
             }
         }
@@ -457,7 +603,7 @@ private fun SectionHeader(
             text = title,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
-            color = TextPrimary
+            color = InkPrimary
         )
         if (actionText != null) {
             TextButton(onClick = onAction) {

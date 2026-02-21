@@ -19,29 +19,29 @@ interface TaskDao {
     @Query("SELECT * FROM tasks WHERE id = :taskId")
     fun getTaskByIdFlow(taskId: String): Flow<Task?>
     
-    @Query("SELECT * FROM tasks WHERE status = :status ORDER BY deadline ASC")
-    fun getTasksByStatus(status: TaskStatus): Flow<List<Task>>
+    @Query("SELECT * FROM tasks WHERE (userId IS NULL OR userId = :userId) AND status = :status ORDER BY deadline ASC")
+    fun getTasksByStatus(status: TaskStatus, userId: String): Flow<List<Task>>
     
-    @Query("SELECT * FROM tasks WHERE type = :type ORDER BY deadline ASC")
-    fun getTasksByType(type: TaskType): Flow<List<Task>>
+    @Query("SELECT * FROM tasks WHERE (userId IS NULL OR userId = :userId) AND type = :type ORDER BY deadline ASC")
+    fun getTasksByType(type: TaskType, userId: String): Flow<List<Task>>
     
-    @Query("SELECT * FROM tasks WHERE status IN ('PENDING', 'IN_PROGRESS') ORDER BY deadline ASC")
-    fun getActiveTasks(): Flow<List<Task>>
+    @Query("SELECT * FROM tasks WHERE (userId IS NULL OR userId = :userId) AND status IN ('PENDING', 'IN_PROGRESS') ORDER BY deadline ASC")
+    fun getActiveTasks(userId: String): Flow<List<Task>>
     
     @Query("SELECT * FROM tasks WHERE courseId = :courseId ORDER BY `order`")
     fun getTasksByCourse(courseId: String): Flow<List<Task>>
     
-    @Query("SELECT * FROM tasks WHERE (targetGrade IS NULL OR targetGrade = :grade) AND status IN ('PENDING', 'IN_PROGRESS') ORDER BY deadline ASC")
-    fun getActiveTasksForGrade(grade: String): Flow<List<Task>>
+    @Query("SELECT * FROM tasks WHERE (targetGrade IS NULL OR targetGrade = :grade) AND (userId IS NULL OR userId = :userId) AND status IN ('PENDING', 'IN_PROGRESS') ORDER BY deadline ASC")
+    fun getActiveTasksForGrade(grade: String, userId: String): Flow<List<Task>>
 
-    @Query("SELECT * FROM tasks WHERE (targetGrade IS NULL OR targetGrade = :grade) ORDER BY deadline ASC")
-    fun getTasksForGrade(grade: String): Flow<List<Task>>
+    @Query("SELECT * FROM tasks WHERE (targetGrade IS NULL OR targetGrade = :grade) AND (userId IS NULL OR userId = :userId) ORDER BY deadline ASC")
+    fun getTasksForGrade(grade: String, userId: String): Flow<List<Task>>
     
     @Query("SELECT * FROM tasks WHERE deadline < :timestamp AND status = 'PENDING'")
     suspend fun getExpiredTasks(timestamp: Long): List<Task>
     
-    @Query("SELECT COUNT(*) FROM tasks WHERE status = 'COMPLETED'")
-    fun getCompletedTaskCount(): Flow<Int>
+    @Query("SELECT COUNT(*) FROM tasks WHERE (userId IS NULL OR userId = :userId) AND status = 'COMPLETED'")
+    fun getCompletedTaskCount(userId: String): Flow<Int>
     
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTask(task: Task)
@@ -82,6 +82,6 @@ interface TaskDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertStudySession(session: StudySession)
 
-    @Query("SELECT COALESCE(SUM(durationMinutes), 0) FROM study_sessions WHERE dayKey = :dayKey")
-    fun getStudyMinutesForDay(dayKey: String): Flow<Int>
+    @Query("SELECT COALESCE(SUM(durationMinutes), 0) FROM study_sessions WHERE userId = :userId AND dayKey = :dayKey")
+    fun getStudyMinutesForDay(userId: String, dayKey: String): Flow<Int>
 }

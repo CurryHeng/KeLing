@@ -34,7 +34,7 @@ fun KnowledgePracticeScreen(
                 title = {
                     Text(
                         text = uiState.point?.name?.let { "$it · 刷题练习" } ?: "刷题练习",
-                        color = TextPrimary
+                        color = InkPrimary
                     )
                 },
                 navigationIcon = {
@@ -42,22 +42,22 @@ fun KnowledgePracticeScreen(
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "返回",
-                            tint = TextPrimary
+                            tint = InkPrimary
                         )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = DarkBackground
+                    containerColor = PaperBackground
                 )
             )
         },
-        containerColor = DarkBackground
+        containerColor = PaperBackground
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .background(DarkBackground)
+                .background(PaperBackground)
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
@@ -80,12 +80,12 @@ fun KnowledgePracticeScreen(
                         Text(
                             text = "练习进度",
                             style = MaterialTheme.typography.titleSmall,
-                            color = TextSecondary
+                            color = InkSecondary
                         )
                         Text(
                             text = "${uiState.correctCount} 正确 · ${uiState.wrongCount} 错误",
                             style = MaterialTheme.typography.bodyMedium,
-                            color = TextPrimary
+                            color = InkPrimary
                         )
                     }
                 }
@@ -115,7 +115,7 @@ fun KnowledgePracticeScreen(
                             Text(
                                 text = "正确 ${uiState.correctCount} 题，错误 ${uiState.wrongCount} 题。",
                                 style = MaterialTheme.typography.bodySmall,
-                                color = TextSecondary
+                                color = InkSecondary
                             )
                         }
                     }
@@ -127,7 +127,7 @@ fun KnowledgePracticeScreen(
                         text = "错题本",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold,
-                        color = TextPrimary
+                        color = InkPrimary
                     )
                     LazyColumn(
                         modifier = Modifier
@@ -160,12 +160,12 @@ private fun PracticeQuestionCard(
             Text(
                 text = "第 ${index + 1} / $total 题",
                 style = MaterialTheme.typography.labelSmall,
-                color = TextSecondary
+                color = InkSecondary
             )
             Text(
                 text = question.text,
                 style = MaterialTheme.typography.bodyMedium,
-                color = TextPrimary
+                color = InkPrimary
             )
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 question.options.forEachIndexed { i, opt ->
@@ -196,7 +196,7 @@ private fun WrongRecordItem(index: Int, record: LearningRecord) {
             Text(
                 text = record.questionId ?: "（题目内容已记录）",
                 style = MaterialTheme.typography.bodySmall,
-                color = TextPrimary
+                color = InkPrimary
             )
         }
     }

@@ -31,7 +31,7 @@ fun CoursesScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(DarkBackground)
+            .background(PaperBackground)
             .statusBarsPadding()
     ) {
         // 顶部标题
@@ -46,7 +46,7 @@ fun CoursesScreen(
                 text = "课程管理",
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
-                color = TextPrimary
+                color = InkPrimary
             )
 
             Row {
@@ -139,12 +139,12 @@ private fun TodayScheduleContent(
                 Text(
                     text = "今天没有课程",
                     style = MaterialTheme.typography.titleMedium,
-                    color = TextSecondary
+                    color = InkSecondary
                 )
                 Text(
                     text = "好好休息或自主学习吧！",
                     style = MaterialTheme.typography.bodySmall,
-                    color = TextTertiary
+                    color = InkMuted
                 )
             }
         }
@@ -178,7 +178,7 @@ private fun ScheduleCard(
     val statusColor = when (item.status) {
         CourseStatus.NOT_STARTED -> NeonBlue
         CourseStatus.ONGOING -> NeonGreen
-        CourseStatus.FINISHED -> TextTertiary
+        CourseStatus.FINISHED -> InkMuted
     }
     
     NeonCard(
@@ -203,7 +203,7 @@ private fun ScheduleCard(
                 Text(
                     text = item.endTime,
                     style = MaterialTheme.typography.bodySmall,
-                    color = TextSecondary
+                    color = InkSecondary
                 )
             }
             
@@ -228,7 +228,7 @@ private fun ScheduleCard(
                         text = item.courseName,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        color = TextPrimary
+                        color = InkPrimary
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
@@ -241,14 +241,14 @@ private fun ScheduleCard(
                 Text(
                     text = "${item.teacherName} · ${item.location}",
                     style = MaterialTheme.typography.bodySmall,
-                    color = TextSecondary
+                    color = InkSecondary
                 )
             }
             
             Icon(
                 imageVector = Icons.Default.ChevronRight,
                 contentDescription = null,
-                tint = TextTertiary
+                tint = InkMuted
             )
         }
     }
@@ -302,7 +302,7 @@ private fun WeekScheduleContent(
         AlertDialog(
             onDismissRequest = { showAddDialog = false },
             title = {
-                Text(text = "新增课表", color = TextPrimary)
+                Text(text = "新增课表", color = InkPrimary)
             },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -392,7 +392,7 @@ private fun WeekScheduleContent(
                     text = dayNames[dayIndex],
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
-                    color = TextPrimary
+                    color = InkPrimary
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 
@@ -400,7 +400,7 @@ private fun WeekScheduleContent(
                     Text(
                         text = "无课程",
                         style = MaterialTheme.typography.bodySmall,
-                        color = TextTertiary
+                        color = InkMuted
                     )
                 } else {
                     daySchedule.forEach { item ->
@@ -419,7 +419,8 @@ private fun WeekScheduleContent(
                             Text(
                                 text = item.courseName,
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = TextPrimary,
+                                fontWeight = FontWeight.Bold,
+                                color = InkPrimary,
                                 modifier = Modifier.weight(1f)
                             )
                             Text(
@@ -432,7 +433,7 @@ private fun WeekScheduleContent(
                                 color = when (item.status) {
                                     CourseStatus.NOT_STARTED -> NeonBlue
                                     CourseStatus.ONGOING -> NeonGreen
-                                    CourseStatus.FINISHED -> TextTertiary
+                                    CourseStatus.FINISHED -> InkMuted
                                 },
                                 modifier = Modifier.padding(horizontal = 8.dp)
                             )

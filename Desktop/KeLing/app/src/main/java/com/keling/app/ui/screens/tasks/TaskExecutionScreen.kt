@@ -42,16 +42,16 @@ fun TaskExecutionScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("执行任务", color = TextPrimary) },
+                title = { Text("执行任务", color = InkPrimary) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "返回", tint = TextPrimary)
+                        Icon(Icons.Default.ArrowBack, contentDescription = "返回", tint = InkPrimary)
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(containerColor = DarkBackground)
+                colors = TopAppBarDefaults.topAppBarColors(containerColor = PaperBackground)
             )
         },
-        containerColor = DarkBackground
+        containerColor = PaperBackground
     ) { padding ->
         if (uiState.isLoading && uiState.task == null) {
             Box(Modifier.fillMaxSize().padding(padding), contentAlignment = Alignment.Center) {
@@ -136,7 +136,7 @@ private fun QuizExecution(
     }
 
     if (questions.isEmpty()) {
-        Text("无题目", color = TextSecondary)
+        Text("无题目", color = InkSecondary)
         return
     }
 
@@ -144,16 +144,16 @@ private fun QuizExecution(
         Text(
             task.title,
             style = MaterialTheme.typography.titleMedium,
-            color = TextPrimary,
+            color = InkPrimary,
             fontWeight = FontWeight.Bold
         )
         Spacer(Modifier.height(8.dp))
-        Text("第 ${currentIndex + 1} / ${questions.size} 题", style = MaterialTheme.typography.bodySmall, color = TextSecondary)
+        Text("第 ${currentIndex + 1} / ${questions.size} 题", style = MaterialTheme.typography.bodySmall, color = InkSecondary)
         Spacer(Modifier.height(16.dp))
 
         val q = questions[currentIndex]
         NeonCard(glowColor = NeonBlue) {
-            Text(q.question, style = MaterialTheme.typography.bodyLarge, color = TextPrimary)
+            Text(q.question, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold, color = InkPrimary)
             Spacer(Modifier.height(12.dp))
             q.options.forEachIndexed { i, opt ->
                 val selected = answersPadded.getOrNull(currentIndex) == i
@@ -165,7 +165,7 @@ private fun QuizExecution(
                         answers = next
                     },
                     shape = RoundedCornerShape(12.dp),
-                    color = if (selected) NeonBlue.copy(alpha = 0.2f) else DarkSurfaceVariant
+                    color = if (selected) NeonBlue.copy(alpha = 0.2f) else PaperSurfaceVariant
                 ) {
                     Row(
                         Modifier.fillMaxWidth().padding(12.dp),
@@ -173,7 +173,7 @@ private fun QuizExecution(
                     ) {
                         RadioButton(selected = selected, onClick = null, colors = RadioButtonDefaults.colors(selectedColor = NeonBlue))
                         Spacer(Modifier.width(8.dp))
-                        Text(opt, color = TextPrimary)
+                        Text(opt, color = InkPrimary)
                     }
                 }
                 Spacer(Modifier.height(8.dp))
@@ -234,14 +234,14 @@ private fun ReadingExecution(
     val reached = elapsed >= targetSeconds
 
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
-        Text(task.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = TextPrimary)
+        Text(task.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = InkPrimary)
         Spacer(Modifier.height(8.dp))
-        Text(task.description, style = MaterialTheme.typography.bodyMedium, color = TextSecondary)
+        Text(task.description, style = MaterialTheme.typography.bodyMedium, color = InkSecondary)
         Spacer(Modifier.height(24.dp))
         NeonCard(glowColor = NeonPurple) {
-            Text("阅读时长", style = MaterialTheme.typography.labelMedium, color = TextSecondary)
+            Text("阅读时长", style = MaterialTheme.typography.labelMedium, color = InkSecondary)
             Text("${elapsed / 60}:${"%02d".format(elapsed % 60)} / $durationMinutes:00", style = MaterialTheme.typography.headlineSmall, color = NeonPurple)
-            if (payload?.pageRange != null) Text("建议范围：${payload.pageRange}", style = MaterialTheme.typography.bodySmall, color = TextTertiary)
+            if (payload?.pageRange != null) Text("建议范围：${payload.pageRange}", style = MaterialTheme.typography.bodySmall, color = InkMuted)
         }
         Spacer(Modifier.height(16.dp))
         NeonButton(
@@ -275,12 +275,12 @@ private fun VideoExecution(
     val reached = elapsed >= targetSeconds
 
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
-        Text(task.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = TextPrimary)
+        Text(task.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = InkPrimary)
         Spacer(Modifier.height(8.dp))
-        Text(task.description, style = MaterialTheme.typography.bodyMedium, color = TextSecondary)
+        Text(task.description, style = MaterialTheme.typography.bodyMedium, color = InkSecondary)
         Spacer(Modifier.height(24.dp))
         NeonCard(glowColor = NeonBlue) {
-            Text("观看时长", style = MaterialTheme.typography.labelMedium, color = TextSecondary)
+            Text("观看时长", style = MaterialTheme.typography.labelMedium, color = InkSecondary)
             Text("${elapsed / 60}:${"%02d".format(elapsed % 60)} / $durationMinutes:00", style = MaterialTheme.typography.headlineSmall, color = NeonBlue)
         }
         Spacer(Modifier.height(16.dp))
@@ -313,12 +313,12 @@ private fun ExerciseExecution(
     }
 
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
-        Text(task.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = TextPrimary)
+        Text(task.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = InkPrimary)
         Spacer(Modifier.height(8.dp))
-        Text(task.description, style = MaterialTheme.typography.bodyMedium, color = TextSecondary)
+        Text(task.description, style = MaterialTheme.typography.bodyMedium, color = InkSecondary)
         if (payload != null) {
             Spacer(Modifier.height(8.dp))
-            Text("${payload.subject} · ${payload.chapter}，题号 ${payload.exerciseIds}", style = MaterialTheme.typography.bodySmall, color = TextTertiary)
+            Text("${payload.subject} · ${payload.chapter}，题号 ${payload.exerciseIds}", style = MaterialTheme.typography.bodySmall, color = InkMuted)
         }
         Spacer(Modifier.height(16.dp))
         NeonCard(glowColor = NeonOrange) {
@@ -356,18 +356,18 @@ private fun MemorizationExecution(
 ) {
     var confirmed by remember { mutableStateOf(false) }
     Column(Modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
-        Text(task.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = TextPrimary)
+        Text(task.title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = InkPrimary)
         Spacer(Modifier.height(8.dp))
-        Text(task.description, style = MaterialTheme.typography.bodyMedium, color = TextSecondary)
+        Text(task.description, style = MaterialTheme.typography.bodyMedium, color = InkSecondary)
         if (payload != null) {
             Spacer(Modifier.height(8.dp))
-            Text("${payload.itemDescription} × ${payload.itemCount}", style = MaterialTheme.typography.bodySmall, color = TextTertiary)
-            payload.hint?.let { Text("提示：$it", style = MaterialTheme.typography.bodySmall, color = TextSecondary) }
+            Text("${payload.itemDescription} × ${payload.itemCount}", style = MaterialTheme.typography.bodySmall, color = InkMuted)
+            payload.hint?.let { Text("提示：$it", style = MaterialTheme.typography.bodySmall, color = InkSecondary) }
         }
         Spacer(Modifier.height(24.dp))
         Row(verticalAlignment = Alignment.CenterVertically) {
             Checkbox(checked = confirmed, onCheckedChange = { confirmed = it }, colors = CheckboxDefaults.colors(checkedColor = NeonGreen))
-            Text("我已完成背诵并自检", color = TextPrimary)
+            Text("我已完成背诵并自检", color = InkPrimary)
         }
         Spacer(Modifier.height(16.dp))
         NeonButton(
@@ -383,8 +383,8 @@ private fun MemorizationExecution(
 @Composable
 private fun UnsupportedExecution(task: Task, onBack: () -> Unit) {
     Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-        Text("该任务类型暂不支持在应用内执行", color = TextSecondary)
-        Text(task.title, style = MaterialTheme.typography.titleSmall, color = TextPrimary)
+        Text("该任务类型暂不支持在应用内执行", color = InkSecondary)
+        Text(task.title, style = MaterialTheme.typography.titleSmall, color = InkPrimary)
         Spacer(Modifier.height(16.dp))
         TextButton(onClick = onBack) { Text("返回", color = NeonBlue) }
     }

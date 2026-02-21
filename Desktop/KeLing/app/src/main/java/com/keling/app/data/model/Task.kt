@@ -43,6 +43,8 @@ enum class TaskStatus {
 data class Task(
     @PrimaryKey
     val id: String,
+    /** 所属用户 ID，与登录用户绑定 */
+    val userId: String? = null,
     val title: String,
     val description: String,
     val type: TaskType,
@@ -113,6 +115,8 @@ data class TaskProgress(
 data class StudySession(
     @PrimaryKey
     val id: String,
+    /** 用户 ID，与登录用户绑定 */
+    val userId: String,
     /** 当天标识，例如 2026-01-28，便于按天汇总 */
     val dayKey: String,
     /** 来源：FOCUS（专注学习）、TASK（完成任务）等 */

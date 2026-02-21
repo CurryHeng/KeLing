@@ -10,6 +10,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.keling.app.ui.components.NeonCard
@@ -23,14 +24,14 @@ fun AboutScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(DarkBackground)
+            .background(PaperBackground)
     ) {
         TopAppBar(
             title = {
                 Text(
                     text = "关于课灵",
                     style = MaterialTheme.typography.titleLarge,
-                    color = TextPrimary
+                    color = InkPrimary
                 )
             },
             navigationIcon = {
@@ -38,12 +39,12 @@ fun AboutScreen(
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = "返回",
-                        tint = TextPrimary
+                        tint = InkPrimary
                     )
                 }
             },
             colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = DarkBackground
+                containerColor = PaperBackground
             )
         )
 
@@ -66,12 +67,12 @@ fun AboutScreen(
             Text(
                 text = "版本 1.0.0 (1)",
                 style = MaterialTheme.typography.bodyMedium,
-                color = TextSecondary
+                color = InkSecondary
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            NeonCard(glowColor = DarkBorder) {
+            NeonCard(glowColor = PaperBorder) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(12.dp),
                     modifier = Modifier.fillMaxWidth()
@@ -79,14 +80,15 @@ fun AboutScreen(
                     Text(
                         text = "课灵是一款面向学生的智能学习助手，支持课表管理、任务规划、专注计时与学习数据统计。",
                         style = MaterialTheme.typography.bodyMedium,
-                        color = TextPrimary,
+                        fontWeight = FontWeight.Bold,
+                        color = InkPrimary,
                         textAlign = TextAlign.Start
                     )
                 }
             }
 
             // 链接占位
-            NeonCard(glowColor = DarkBorder) {
+            NeonCard(glowColor = PaperBorder) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     modifier = Modifier.fillMaxWidth()
@@ -104,10 +106,11 @@ fun AboutScreen(
                         Text(
                             text = "用户协议",
                             style = MaterialTheme.typography.bodyLarge,
-                            color = TextPrimary
+                            fontWeight = FontWeight.Bold,
+                            color = InkPrimary
                         )
                     }
-                    Divider(color = DarkBorder)
+                    Divider(color = PaperBorder)
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
@@ -121,7 +124,8 @@ fun AboutScreen(
                         Text(
                             text = "隐私政策",
                             style = MaterialTheme.typography.bodyLarge,
-                            color = TextPrimary
+                            fontWeight = FontWeight.Bold,
+                            color = InkPrimary
                         )
                     }
                 }

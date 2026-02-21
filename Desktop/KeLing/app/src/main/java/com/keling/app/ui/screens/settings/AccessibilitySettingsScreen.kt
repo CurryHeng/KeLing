@@ -46,14 +46,14 @@ fun AccessibilitySettingsScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(DarkBackground)
+            .background(PaperBackground)
     ) {
         TopAppBar(
             title = {
                 Text(
                     text = "无障碍设置",
                     style = MaterialTheme.typography.titleLarge,
-                    color = TextPrimary
+                    color = InkPrimary
                 )
             },
             navigationIcon = {
@@ -61,12 +61,12 @@ fun AccessibilitySettingsScreen(
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = "返回",
-                        tint = TextPrimary
+                        tint = InkPrimary
                     )
                 }
             },
             colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = DarkBackground
+                containerColor = PaperBackground
             )
         )
 
@@ -90,7 +90,8 @@ fun AccessibilitySettingsScreen(
                             Text(
                                 text = "字体大小",
                                 style = MaterialTheme.typography.bodyLarge,
-                                color = TextPrimary
+                                fontWeight = FontWeight.Bold,
+                                color = InkPrimary
                             )
                             Text(
                                 text = when (state.fontSizeLevel) {
@@ -100,7 +101,7 @@ fun AccessibilitySettingsScreen(
                                     else -> "超大"
                                 },
                                 style = MaterialTheme.typography.bodySmall,
-                                color = TextSecondary
+                                color = InkSecondary
                             )
                         }
                     }
@@ -125,8 +126,8 @@ fun AccessibilitySettingsScreen(
                                 colors = FilterChipDefaults.filterChipColors(
                                     selectedContainerColor = NeonBlue.copy(alpha = 0.2f),
                                     selectedLabelColor = NeonBlue,
-                                    containerColor = DarkSurface,
-                                    labelColor = TextSecondary
+                                    containerColor = PaperSurface,
+                                    labelColor = InkSecondary
                                 )
                             )
                         }
@@ -170,7 +171,8 @@ fun AccessibilitySettingsScreen(
                             Text(
                                 text = "语速",
                                 style = MaterialTheme.typography.bodyLarge,
-                                color = TextPrimary
+                                fontWeight = FontWeight.Bold,
+                                color = InkPrimary
                             )
                             Text(
                                 text = "${state.ttsSpeechRate}x",
@@ -187,7 +189,7 @@ fun AccessibilitySettingsScreen(
                             colors = SliderDefaults.colors(
                                 thumbColor = NeonBlue,
                                 activeTrackColor = NeonBlue,
-                                inactiveTrackColor = DarkBorder
+                                inactiveTrackColor = PaperBorder
                             )
                         )
 
@@ -195,8 +197,8 @@ fun AccessibilitySettingsScreen(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
-                            Text("慢", style = MaterialTheme.typography.labelSmall, color = TextTertiary)
-                            Text("快", style = MaterialTheme.typography.labelSmall, color = TextTertiary)
+                            Text("慢", style = MaterialTheme.typography.labelSmall, color = InkMuted)
+                            Text("快", style = MaterialTheme.typography.labelSmall, color = InkMuted)
                         }
                     }
 
@@ -249,7 +251,7 @@ fun AccessibilitySettingsScreen(
                         text = "支持的语音指令",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold,
-                        color = TextPrimary
+                        color = InkPrimary
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
@@ -290,12 +292,12 @@ private fun AccessibilitySection(
             text = title,
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
-            color = TextPrimary
+            color = InkPrimary
         )
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        NeonCard(glowColor = DarkBorder) {
+        NeonCard(glowColor = PaperBorder) {
             Column(content = content)
         }
     }
@@ -316,12 +318,13 @@ private fun AccessibilitySwitch(
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyLarge,
-                color = TextPrimary
+                fontWeight = FontWeight.Bold,
+                color = InkPrimary
             )
             Text(
                 text = description,
                 style = MaterialTheme.typography.bodySmall,
-                color = TextSecondary
+                color = InkSecondary
             )
         }
 
@@ -331,8 +334,8 @@ private fun AccessibilitySwitch(
             colors = SwitchDefaults.colors(
                 checkedThumbColor = NeonBlue,
                 checkedTrackColor = NeonBlue.copy(alpha = 0.3f),
-                uncheckedThumbColor = TextTertiary,
-                uncheckedTrackColor = DarkBorder
+                uncheckedThumbColor = InkMuted,
+                uncheckedTrackColor = PaperBorder
             )
         )
     }
@@ -350,7 +353,7 @@ private fun GestureHint(
         Text(
             text = gesture,
             style = MaterialTheme.typography.bodyMedium,
-            color = TextSecondary
+            color = InkSecondary
         )
         Text(
             text = action,
@@ -385,7 +388,7 @@ private fun VoiceCommandHint(
         Text(
             text = description,
             style = MaterialTheme.typography.bodySmall,
-            color = TextSecondary
+            color = InkSecondary
         )
     }
 }

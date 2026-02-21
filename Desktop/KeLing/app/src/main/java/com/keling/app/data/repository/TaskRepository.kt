@@ -7,11 +7,15 @@ import com.keling.app.data.model.*
 import com.keling.app.data.repository.AchievementRepository
 import com.keling.app.data.repository.AchievementEvent
 import com.keling.app.data.task.GradeTaskGenerator
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import java.util.UUID
 import javax.inject.Inject
+import kotlin.OptIn
 import kotlin.math.pow
 
 interface TaskRepository {
@@ -56,6 +60,7 @@ interface TaskRepository {
     suspend fun completeChallengeTaskByTitle(title: String)
 }
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class TaskRepositoryImpl @Inject constructor(
     private val taskDao: TaskDao,
     private val gradeTaskGenerator: GradeTaskGenerator,
@@ -67,21 +72,30 @@ class TaskRepositoryImpl @Inject constructor(
     private val difficultyAlpha = 0.25f
     private val difficultyBeta = 1.5f
 
-    override fun getActiveTasks(): Flow<List<Task>> = taskDao.getActiveTasks()
+    override fun getActiveTasks(): Flow<List<Task>> =
+        userRepository.getCurrentUser().flatMapLatest { user ->
+            if (user != null) taskDao.getActiveTasks(user.id) else flowOf(emptyList())
+        }
 
     override fun getActiveTasksForGrade(grade: String): Flow<List<Task>> =
-        taskDao.getActiveTasksForGrade(grade)
+        userRepository.getCurrentUser().flatMapLatest { user ->
+            if (user != null) taskDao.getActiveTasksForGrade(grade, user.id) else flowOf(emptyList())
+        }
 
     override fun getTasksForGrade(grade: String): Flow<List<Task>> =
-        taskDao.getTasksForGrade(grade)
+        userRepository.getCurrentUser().flatMapLatest { user ->
+            if (user != null) taskDao.getTasksForGrade(grade, user.id) else flowOf(emptyList())
+        }
 
-    override fun getTasksByType(type: TaskType): Flow<List<Task>> {
-        return taskDao.getTasksByType(type)
-    }
+    override fun getTasksByType(type: TaskType): Flow<List<Task>> =
+        userRepository.getCurrentUser().flatMapLatest { user ->
+            if (user != null) taskDao.getTasksByType(type, user.id) else flowOf(emptyList())
+        }
 
-    override fun getTasksByStatus(status: TaskStatus): Flow<List<Task>> {
-        return taskDao.getTasksByStatus(status)
-    }
+    override fun getTasksByStatus(status: TaskStatus): Flow<List<Task>> =
+        userRepository.getCurrentUser().flatMapLatest { user ->
+            if (user != null) taskDao.getTasksByStatus(status, user.id) else flowOf(emptyList())
+        }
 
     override suspend fun getTaskById(taskId: String): Task? {
         return taskDao.getTaskById(taskId)
@@ -120,12 +134,16 @@ class TaskRepositoryImpl @Inject constructor(
         taskDao.updateTask(task.copy(progress = progress, status = newStatus))
     }
 
-    override fun getCompletedTaskCount(): Flow<Int> {
-        return taskDao.getCompletedTaskCount()
-    }
+    override fun getCompletedTaskCount(): Flow<Int> =
+        userRepository.getCurrentUser().flatMapLatest { user ->
+            if (user != null) taskDao.getCompletedTaskCount(user.id) else flowOf(0)
+        }
 
     override fun getTodayStudyMinutes(): Flow<Int> {
-        return taskDao.getStudyMinutesForDay(currentDayKey())
+        val dayKey = currentDayKey()
+        return userRepository.getCurrentUser().flatMapLatest { user ->
+            if (user != null) taskDao.getStudyMinutesForDay(user.id, dayKey) else flowOf(0)
+        }
     }
 
     /**
@@ -177,6 +195,7 @@ class TaskRepositoryImpl @Inject constructor(
 
         val task = Task(
             id = UUID.randomUUID().toString(),
+            userId = user.id,
             title = "${targetChapter}学习任务",
             description = content,
             type = type,
@@ -197,7 +216,8 @@ class TaskRepositoryImpl @Inject constructor(
     }
 
     override suspend fun generateAndSaveTasksForGrade(grade: String): List<Task> {
-        val tasks = gradeTaskGenerator.generateForGrade(grade)
+        val userId = userRepository.getCurrentUser().first()?.id ?: return emptyList()
+        val tasks = gradeTaskGenerator.generateForGrade(grade).map { it.copy(userId = userId) }
         taskDao.insertTasks(tasks)
         return tasks
     }
@@ -209,6 +229,7 @@ class TaskRepositoryImpl @Inject constructor(
     }
 
     override suspend fun recordStudyFromTask(task: Task, source: TaskActionType) {
+        val userId = userRepository.getCurrentUser().first()?.id ?: return
         val minutes = when (source) {
             TaskActionType.READING, TaskActionType.VIDEO -> {
                 val payloadMinutes = when (source) {
@@ -224,6 +245,7 @@ class TaskRepositoryImpl @Inject constructor(
         }
         val session = StudySession(
             id = UUID.randomUUID().toString(),
+            userId = userId,
             dayKey = currentDayKey(),
             source = "TASK_${source.name}",
             taskId = task.id,
@@ -234,8 +256,10 @@ class TaskRepositoryImpl @Inject constructor(
 
     override suspend fun recordManualStudy(durationMinutes: Int) {
         if (durationMinutes <= 0) return
+        val userId = userRepository.getCurrentUser().first()?.id ?: return
         val session = StudySession(
             id = UUID.randomUUID().toString(),
+            userId = userId,
             dayKey = currentDayKey(),
             source = "FOCUS",
             taskId = null,
@@ -337,8 +361,9 @@ class TaskRepositoryImpl @Inject constructor(
         if (task.actionType == TaskActionType.MEMORIZATION.name) parsePayload(task.actionType, task.actionPayload) else null
 
     override suspend fun ensureDailyTasksForToday(grade: String) {
+        val userId = userRepository.getCurrentUser().first()?.id ?: return
         val dayKey = currentDayKey()
-        val existing = taskDao.getTasksForGrade(grade).first()
+        val existing = taskDao.getTasksForGrade(grade, userId).first()
         val existingIds = existing.map { it.id }.toSet()
 
         val toCreate = defaultDailyTemplates
@@ -346,6 +371,7 @@ class TaskRepositoryImpl @Inject constructor(
             .map { template ->
                 Task(
                     id = "${template.id}_$dayKey",
+                    userId = userId,
                     title = template.title,
                     description = template.description,
                     type = TaskType.DAILY,
@@ -365,8 +391,9 @@ class TaskRepositoryImpl @Inject constructor(
     }
 
     override suspend fun completeChallengeTaskByTitle(title: String) {
+        val userId = userRepository.getCurrentUser().first()?.id ?: return
         // 按标题查找一条未完成的挑战任务并标记完成，同时触发成就系统
-        val allChallenges = taskDao.getTasksByType(TaskType.CHALLENGE).first()
+        val allChallenges = taskDao.getTasksByType(TaskType.CHALLENGE, userId).first()
         val target = allChallenges.firstOrNull { it.title == title && it.status != TaskStatus.COMPLETED }
             ?: return
 
@@ -382,7 +409,6 @@ class TaskRepositoryImpl @Inject constructor(
         recordStudyFromTask(updated, TaskActionType.EXERCISE)
 
         // 成就系统：按总完成任务数触发任务成就（first_task, task_10, task_50, task_100 等）
-        val userId = userRepository.getCurrentUser().first()?.id ?: return
         val completedCount = getCompletedTaskCount().first()
         achievementRepository.checkAndUnlockAchievements(
             userId = userId,

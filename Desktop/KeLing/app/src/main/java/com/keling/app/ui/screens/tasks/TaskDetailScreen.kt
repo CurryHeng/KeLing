@@ -31,20 +31,20 @@ fun TaskDetailScreen(
     val uiState by viewModel.uiState.collectAsState()
     LaunchedEffect(taskId) { viewModel.loadTask(taskId) }
 
-    Column(modifier = Modifier.fillMaxSize().background(DarkBackground)) {
+    Column(modifier = Modifier.fillMaxSize().background(PaperBackground)) {
         TopAppBar(
-            title = { Text("任务详情", color = TextPrimary) },
+            title = { Text("任务详情", color = InkPrimary) },
             navigationIcon = {
                 IconButton(onClick = onBack) {
-                    Icon(Icons.Default.ArrowBack, contentDescription = "返回", tint = TextPrimary)
+                    Icon(Icons.Default.ArrowBack, contentDescription = "返回", tint = InkPrimary)
                 }
             },
             actions = {
                 IconButton(onClick = { /* 分享 */ }) {
-                    Icon(Icons.Default.Share, contentDescription = "分享", tint = TextSecondary)
+                    Icon(Icons.Default.Share, contentDescription = "分享", tint = InkSecondary)
                 }
             },
-            colors = TopAppBarDefaults.topAppBarColors(containerColor = DarkBackground)
+            colors = TopAppBarDefaults.topAppBarColors(containerColor = PaperBackground)
         )
 
         when {
@@ -80,7 +80,7 @@ fun TaskDetailScreen(
                                 text = task.title,
                                 style = MaterialTheme.typography.headlineSmall,
                                 fontWeight = FontWeight.Bold,
-                                color = TextPrimary
+                                color = InkPrimary
                             )
                             Spacer(Modifier.height(8.dp))
                             Row {
@@ -90,7 +90,7 @@ fun TaskDetailScreen(
                                     Text(
                                         text = id,
                                         style = MaterialTheme.typography.labelMedium,
-                                        color = TextSecondary
+                                        color = InkSecondary
                                     )
                                 }
                             }
@@ -100,7 +100,7 @@ fun TaskDetailScreen(
                     Spacer(Modifier.height(24.dp))
 
                     NeonCard(glowColor = NeonBlue) {
-                        Text("完成进度", style = MaterialTheme.typography.titleSmall, color = TextSecondary)
+                        Text("完成进度", style = MaterialTheme.typography.titleSmall, color = InkSecondary)
                         Spacer(Modifier.height(12.dp))
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -117,14 +117,14 @@ fun TaskDetailScreen(
                                 Text(
                                     text = "预计耗时: ${task.estimatedMinutes} 分钟",
                                     style = MaterialTheme.typography.bodyMedium,
-                                    color = TextPrimary
+                                    color = InkPrimary
                                 )
                                 if (task.chapterId != null) {
                                     Spacer(Modifier.height(4.dp))
                                     Text(
                                         text = "章节: ${task.chapterId}",
                                         style = MaterialTheme.typography.bodySmall,
-                                        color = TextSecondary
+                                        color = InkSecondary
                                     )
                                 }
                             }
@@ -134,7 +134,7 @@ fun TaskDetailScreen(
                     Spacer(Modifier.height(16.dp))
 
                     NeonCard(glowColor = NeonGold) {
-                        Text("完成奖励", style = MaterialTheme.typography.titleSmall, color = TextSecondary)
+                        Text("完成奖励", style = MaterialTheme.typography.titleSmall, color = InkSecondary)
                         Spacer(Modifier.height(12.dp))
                         Row(
                             modifier = Modifier.fillMaxWidth(),
@@ -158,19 +158,19 @@ fun TaskDetailScreen(
                     Spacer(Modifier.height(16.dp))
 
                     NeonCard(glowColor = NeonPurple) {
-                        Text("任务说明", style = MaterialTheme.typography.titleSmall, color = TextSecondary)
+                        Text("任务说明", style = MaterialTheme.typography.titleSmall, color = InkSecondary)
                         Spacer(Modifier.height(12.dp))
                         Text(
                             text = task.description,
                             style = MaterialTheme.typography.bodyMedium,
-                            color = TextPrimary
+                            color = InkPrimary
                         )
                         if (task.chapterId != null) {
                             Spacer(Modifier.height(12.dp))
                             Row(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .background(DarkSurfaceVariant, RoundedCornerShape(8.dp))
+                                    .background(PaperSurfaceVariant, RoundedCornerShape(8.dp))
                                     .padding(12.dp),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
@@ -184,7 +184,7 @@ fun TaskDetailScreen(
                                 Text(
                                     text = task.chapterId,
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = TextPrimary
+                                    color = InkPrimary
                                 )
                             }
                         }
@@ -227,7 +227,7 @@ fun TaskDetailScreen(
                         Text(
                             text = "该任务暂不支持在应用内执行",
                             style = MaterialTheme.typography.bodySmall,
-                            color = TextSecondary
+                            color = InkSecondary
                         )
                     }
                 }
@@ -247,7 +247,7 @@ private fun RewardItem(
         Icon(icon, contentDescription = null, tint = color, modifier = Modifier.size(32.dp))
         Spacer(Modifier.height(4.dp))
         Text(value, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = color)
-        Text(label, style = MaterialTheme.typography.labelSmall, color = TextSecondary)
+        Text(label, style = MaterialTheme.typography.labelSmall, color = InkSecondary)
     }
 }
 
@@ -273,7 +273,7 @@ private fun DailyTaskTimer(
             Text(
                 text = "日常任务计时",
                 style = MaterialTheme.typography.titleSmall,
-                color = TextSecondary
+                color = InkSecondary
             )
             Text(
                 text = String.format("%02d:%02d", elapsedSeconds / 60, elapsedSeconds % 60),

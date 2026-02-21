@@ -3,6 +3,7 @@ package com.keling.app.di
 import android.content.Context
 import androidx.room.Room
 import com.keling.app.data.local.KelingDatabase
+import com.keling.app.data.local.dao.CheckInDao
 import com.keling.app.data.local.dao.*
 import dagger.Module
 import dagger.Provides
@@ -43,4 +44,7 @@ object DatabaseModule {
 
     @Provides
     fun provideKnowledgeDao(database: KelingDatabase): KnowledgeDao = database.knowledgeDao()
+
+    @Provides
+    fun provideCheckInDao(database: KelingDatabase): CheckInDao = database.checkInDao()
 }

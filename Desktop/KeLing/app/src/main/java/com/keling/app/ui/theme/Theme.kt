@@ -2,7 +2,7 @@ package com.keling.app.ui.theme
 
 import android.app.Activity
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
@@ -18,89 +18,89 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.keling.app.ui.screens.settings.AccessibilityViewModel
 
 /**
- * 课灵应用主题 - 科幻赛博朋克风格
- * 始终使用深色主题以保持沉浸感
+ * 课灵应用主题 - 古风画卷 · 宣纸墨字朱砂
+ * 暖米纸底、墨色文字、朱砂点缀、衬线题字、留白与细线
  */
 
-private val KelingColorScheme = darkColorScheme(
-    // 主色
+private val KelingColorScheme = lightColorScheme(
+    // 主色 - 朱砂
     primary = NeonBlue,
-    onPrimary = DarkBackground,
-    primaryContainer = NeonBlueDark,
-    onPrimaryContainer = TextPrimary,
+    onPrimary = Color.White,
+    primaryContainer = NeonBlueLight.copy(alpha = 0.3f),
+    onPrimaryContainer = InkPrimary,
 
-    // 次要色
+    // 次要色 - 金
     secondary = NeonPurple,
-    onSecondary = DarkBackground,
-    secondaryContainer = NeonPurpleDark,
-    onSecondaryContainer = TextPrimary,
+    onSecondary = InkPrimary,
+    secondaryContainer = NeonPurpleLight.copy(alpha = 0.3f),
+    onSecondaryContainer = InkPrimary,
 
-    // 第三色
+    // 第三色 - 石青
     tertiary = NeonPink,
-    onTertiary = DarkBackground,
-    tertiaryContainer = NeonPinkDark,
-    onTertiaryContainer = TextPrimary,
+    onTertiary = Color.White,
+    tertiaryContainer = NeonPinkLight.copy(alpha = 0.25f),
+    onTertiaryContainer = InkPrimary,
 
-    // 背景
-    background = DarkBackground,
-    onBackground = TextPrimary,
+    // 背景 - 宣纸
+    background = PaperBackground,
+    onBackground = InkPrimary,
 
     // 表面
-    surface = DarkSurface,
-    onSurface = TextPrimary,
-    surfaceVariant = DarkSurfaceVariant,
-    onSurfaceVariant = TextSecondary,
+    surface = PaperSurface,
+    onSurface = InkPrimary,
+    surfaceVariant = PaperSurfaceVariant,
+    onSurfaceVariant = InkSecondary,
 
     // 轮廓
-    outline = DarkBorder,
-    outlineVariant = DarkBorder,
+    outline = PaperBorder,
+    outlineVariant = PaperBorder,
 
     // 错误
     error = NeonRed,
-    onError = DarkBackground,
-    errorContainer = NeonRedDark,
-    onErrorContainer = TextPrimary,
+    onError = Color.White,
+    errorContainer = NeonRedLight.copy(alpha = 0.3f),
+    onErrorContainer = InkPrimary,
 
     // 反转
-    inverseSurface = TextPrimary,
-    inverseOnSurface = DarkBackground,
-    inversePrimary = NeonBlueDark,
+    inverseSurface = InkPrimary,
+    inverseOnSurface = PaperBackground,
+    inversePrimary = NeonBlueLight,
 
     // 其他
-    scrim = Color.Black.copy(alpha = 0.6f),
+    scrim = Color.Black.copy(alpha = 0.4f),
     surfaceTint = NeonBlue
 )
 
-/** 高对比度配色：更亮的文字与轮廓，便于视障用户 */
-private val HighContrastColorScheme = darkColorScheme(
+/** 高对比度配色：更深墨字与更清晰轮廓，便于视障用户 */
+private val HighContrastColorScheme = lightColorScheme(
     primary = NeonBlue,
-    onPrimary = DarkBackground,
+    onPrimary = Color.White,
     primaryContainer = NeonBlueDark,
-    onPrimaryContainer = Color.White,
+    onPrimaryContainer = InkPrimary,
     secondary = NeonPurple,
-    onSecondary = DarkBackground,
+    onSecondary = InkPrimary,
     secondaryContainer = NeonPurpleDark,
-    onSecondaryContainer = Color.White,
+    onSecondaryContainer = InkPrimary,
     tertiary = NeonPink,
-    onTertiary = DarkBackground,
+    onTertiary = Color.White,
     tertiaryContainer = NeonPinkDark,
-    onTertiaryContainer = Color.White,
-    background = DarkBackground,
-    onBackground = Color.White,
-    surface = DarkSurface,
-    onSurface = Color.White,
-    surfaceVariant = DarkSurfaceVariant,
-    onSurfaceVariant = Color(0xFFE0E4EC),
-    outline = NeonBlue.copy(alpha = 0.8f),
-    outlineVariant = NeonBlue.copy(alpha = 0.5f),
+    onTertiaryContainer = InkPrimary,
+    background = PaperBackground,
+    onBackground = InkPrimary,
+    surface = PaperSurface,
+    onSurface = InkPrimary,
+    surfaceVariant = PaperSurfaceVariant,
+    onSurfaceVariant = InkSecondary,
+    outline = InkPrimary.copy(alpha = 0.8f),
+    outlineVariant = InkSecondary,
     error = NeonRed,
-    onError = DarkBackground,
+    onError = Color.White,
     errorContainer = NeonRedDark,
-    onErrorContainer = Color.White,
-    inverseSurface = Color.White,
-    inverseOnSurface = DarkBackground,
+    onErrorContainer = InkPrimary,
+    inverseSurface = InkPrimary,
+    inverseOnSurface = PaperBackground,
     inversePrimary = NeonBlueDark,
-    scrim = Color.Black.copy(alpha = 0.7f),
+    scrim = Color.Black.copy(alpha = 0.5f),
     surfaceTint = NeonBlue
 )
 
@@ -114,11 +114,11 @@ fun KelingTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = Color.Transparent.toArgb()
-            window.navigationBarColor = Color.Transparent.toArgb()
+            window.statusBarColor = PaperBackground.toArgb()
+            window.navigationBarColor = PaperSurface.toArgb()
             WindowCompat.getInsetsController(window, view).apply {
-                isAppearanceLightStatusBars = false
-                isAppearanceLightNavigationBars = false
+                isAppearanceLightStatusBars = true
+                isAppearanceLightNavigationBars = true
             }
         }
     }

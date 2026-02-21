@@ -35,7 +35,7 @@ fun CourseDetailScreen(
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        containerColor = DarkBackground,
+        containerColor = PaperBackground,
         topBar = {
             TopAppBar(
                 title = { },
@@ -44,7 +44,7 @@ fun CourseDetailScreen(
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "返回",
-                            tint = TextPrimary
+                            tint = InkPrimary
                         )
                     }
                 },
@@ -53,12 +53,12 @@ fun CourseDetailScreen(
                         Icon(
                             imageVector = Icons.Default.MoreVert,
                             contentDescription = "更多",
-                            tint = TextSecondary
+                            tint = InkSecondary
                         )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = DarkBackground
+                    containerColor = PaperBackground
                 )
             )
         }
@@ -66,7 +66,7 @@ fun CourseDetailScreen(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(DarkBackground)
+                .background(PaperBackground)
                 .padding(padding)
         ) {
             when {
@@ -103,7 +103,7 @@ fun CourseDetailScreen(
                                         Text(
                                             text = "学习进度",
                                             style = MaterialTheme.typography.titleSmall,
-                                            color = TextSecondary
+                                            color = InkSecondary
                                         )
                                         Spacer(modifier = Modifier.height(4.dp))
                                         Text(
@@ -151,7 +151,7 @@ fun CourseDetailScreen(
                                 text = "AI 学习任务",
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
-                                color = TextPrimary
+                                color = InkPrimary
                             )
                         }
 
@@ -179,7 +179,7 @@ fun CourseDetailScreen(
                     ) {
                         Text(
                             text = uiState.errorMessage ?: "未找到课程详情",
-                            color = TextSecondary
+                            color = InkSecondary
                         )
                     }
                 }
@@ -207,7 +207,7 @@ private fun CourseHeader(course: CourseDetailUi) {
             Text(
                 text = course.name.first().toString(),
                 style = MaterialTheme.typography.displayLarge,
-                color = DarkBackground.copy(alpha = 0.3f)
+                color = PaperBackground.copy(alpha = 0.3f)
             )
         }
         
@@ -217,7 +217,7 @@ private fun CourseHeader(course: CourseDetailUi) {
             text = course.name,
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
-            color = TextPrimary
+            color = InkPrimary
         )
         
         Spacer(modifier = Modifier.height(8.dp))
@@ -244,7 +244,7 @@ private fun CourseHeader(course: CourseDetailUi) {
         Text(
             text = course.description,
             style = MaterialTheme.typography.bodyMedium,
-            color = TextSecondary
+            color = InkSecondary
         )
     }
 }
@@ -260,14 +260,14 @@ private fun InfoChip(
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = TextTertiary,
+            tint = InkMuted,
             modifier = Modifier.size(14.dp)
         )
         Spacer(modifier = Modifier.width(4.dp))
         Text(
             text = text,
             style = MaterialTheme.typography.labelSmall,
-            color = TextSecondary
+            color = InkSecondary
         )
     }
 }
@@ -279,7 +279,7 @@ private fun ChapterItem(
 ) {
     NeonCard(
         glowColor = if (chapter.isCompleted) NeonGreen else 
-                    if (chapter.progress > 0) NeonOrange else DarkBorder
+                    if (chapter.progress > 0) NeonOrange else PaperBorder
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -291,7 +291,7 @@ private fun ChapterItem(
                     .size(40.dp)
                     .background(
                         color = if (chapter.isCompleted) NeonGreen.copy(alpha = 0.2f)
-                               else DarkSurfaceVariant,
+                               else PaperSurfaceVariant,
                         shape = RoundedCornerShape(8.dp)
                     ),
                 contentAlignment = Alignment.Center
@@ -307,7 +307,7 @@ private fun ChapterItem(
                     Text(
                         text = "${(chapter.progress * 100).toInt()}%",
                         style = MaterialTheme.typography.labelSmall,
-                        color = if (chapter.progress > 0) NeonOrange else TextTertiary
+                        color = if (chapter.progress > 0) NeonOrange else InkMuted
                     )
                 }
             }
@@ -318,7 +318,7 @@ private fun ChapterItem(
                 Text(
                     text = chapter.title,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = TextPrimary
+                    color = InkPrimary
                 )
                 if (!chapter.isCompleted && chapter.progress > 0) {
                     Spacer(modifier = Modifier.height(4.dp))
@@ -334,7 +334,7 @@ private fun ChapterItem(
                 Icon(
                     imageVector = Icons.Default.ChevronRight,
                     contentDescription = null,
-                    tint = TextTertiary
+                    tint = InkMuted
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 NeonOutlinedButton(

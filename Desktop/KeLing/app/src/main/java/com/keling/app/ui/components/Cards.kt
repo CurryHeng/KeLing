@@ -1,6 +1,5 @@
 package com.keling.app.ui.components
 
-import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -18,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.keling.app.ui.theme.*
 
 /**
- * 科幻风格卡片 - 带霓虹边框发光效果
+ * 古风卡片 - 金/朱砂边框光晕
  */
 @Composable
 fun NeonCard(
@@ -34,18 +33,18 @@ fun NeonCard(
             .shadow(
                 elevation = 8.dp,
                 shape = shape,
-                ambientColor = glowColor.copy(alpha = 0.3f),
-                spotColor = glowColor.copy(alpha = 0.3f)
+                ambientColor = NeonPurple.copy(alpha = 0.2f),
+                spotColor = glowColor.copy(alpha = 0.35f)
             )
             .clip(shape)
-            .background(DarkCard)
+            .background(PaperSurface)
             .border(
                 width = 1.dp,
                 brush = Brush.linearGradient(
                     colors = listOf(
+                        NeonGold.copy(alpha = 0.5f),
                         glowColor.copy(alpha = 0.6f),
-                        glowColor.copy(alpha = 0.2f),
-                        glowColor.copy(alpha = 0.4f)
+                        glowColor.copy(alpha = 0.3f)
                     )
                 ),
                 shape = shape
@@ -63,7 +62,7 @@ fun NeonCard(
 }
 
 /**
- * 渐变卡片
+ * 渐变卡片 - 朱砂到金
  */
 @Composable
 fun GradientCard(
@@ -133,13 +132,13 @@ fun TaskCard(
                 Text(
                     text = title,
                     style = MaterialTheme.typography.titleMedium,
-                    color = TextPrimary
+                    color = InkPrimary
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = description,
                     style = MaterialTheme.typography.bodySmall,
-                    color = TextSecondary
+                    color = InkSecondary
                 )
             }
             
@@ -179,7 +178,7 @@ fun TaskCard(
             Text(
                 text = "${(progress * 100).toInt()}%",
                 style = MaterialTheme.typography.labelSmall,
-                color = TextSecondary
+                color = InkSecondary
             )
         }
     }
@@ -205,19 +204,19 @@ fun CourseCard(
         Text(
             text = name,
             style = MaterialTheme.typography.titleMedium,
-            color = TextPrimary
+            color = InkPrimary
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = "授课教师：$teacherName",
             style = MaterialTheme.typography.bodySmall,
-            color = TextSecondary
+            color = InkSecondary
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
             text = "学分：$credits",
             style = MaterialTheme.typography.bodySmall,
-            color = TextTertiary
+            color = InkMuted
         )
         
         Spacer(modifier = Modifier.height(12.dp))

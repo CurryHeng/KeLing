@@ -33,7 +33,7 @@ fun CampusPlanetScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(DarkBackground)
+            .background(PaperBackground)
     ) {
         StarryBackground(modifier = Modifier.fillMaxSize(), starCount = 60)
 
@@ -42,14 +42,14 @@ fun CampusPlanetScreen(
             topBar = {
                 TopAppBar(
                     title = {
-                        Text("云端校园星球", color = TextPrimary)
+                        Text("云端校园星球", color = InkPrimary)
                     },
                     navigationIcon = {
                         IconButton(onClick = onBack) {
                             Icon(
                                 imageVector = Icons.Default.ArrowBack,
                                 contentDescription = "返回",
-                                tint = TextPrimary
+                                tint = InkPrimary
                             )
                         }
                     },
@@ -71,7 +71,7 @@ fun CampusPlanetScreen(
                     text = "选择你的校园星球",
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
-                    color = TextSecondary
+                    color = InkSecondary
                 )
 
                 // 论坛星球
@@ -119,7 +119,7 @@ private fun PlanetCard(
                 modifier = Modifier
                     .size(72.dp)
                     .clip(RoundedCornerShape(36.dp))
-                    .background(DarkSurface)
+                    .background(PaperSurface)
             ) {
                 Icon(
                     imageVector = icon,
@@ -140,20 +140,20 @@ private fun PlanetCard(
                     text = title,
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold,
-                    color = TextPrimary
+                    color = InkPrimary
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = description,
                     style = MaterialTheme.typography.bodySmall,
-                    color = TextSecondary
+                    color = InkSecondary
                 )
             }
 
             Icon(
                 imageVector = Icons.Default.ChevronRight,
                 contentDescription = null,
-                tint = TextTertiary
+                tint = InkMuted
             )
         }
     }
@@ -186,22 +186,22 @@ fun ForumPlanetScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("论坛星球", color = TextPrimary) },
+                title = { Text("论坛星球", color = InkPrimary) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "返回",
-                            tint = TextPrimary
+                            tint = InkPrimary
                         )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = DarkBackground
+                    containerColor = PaperBackground
                 )
             )
         },
-        containerColor = DarkBackground
+        containerColor = PaperBackground
     ) { padding ->
         Column(
             modifier = Modifier
@@ -212,7 +212,7 @@ fun ForumPlanetScreen(
             Text(
                 text = "选择一个话题小圈，和校友一起聊天、打卡、组队。",
                 style = MaterialTheme.typography.bodySmall,
-                color = TextSecondary
+                color = InkSecondary
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -231,7 +231,7 @@ fun ForumPlanetScreen(
 
 @Composable
 private fun ForumTopicCard(topic: ForumTopic) {
-    NeonCard(glowColor = if (topic.hot) NeonPurple else DarkBorder) {
+    NeonCard(glowColor = if (topic.hot) NeonPurple else PaperBorder) {
         Column(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -246,12 +246,12 @@ private fun ForumTopicCard(topic: ForumTopic) {
                         text = topic.name,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
-                        color = TextPrimary
+                        color = InkPrimary
                     )
                     Text(
                         text = topic.description,
                         style = MaterialTheme.typography.bodySmall,
-                        color = TextSecondary
+                        color = InkSecondary
                     )
                     Text(
                         text = "${topic.memberCount} 人在此星球",
@@ -336,22 +336,22 @@ fun PracticePlanetScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
-                title = { Text("实践星球", color = TextPrimary) },
+                title = { Text("实践星球", color = InkPrimary) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "返回",
-                            tint = TextPrimary
+                            tint = InkPrimary
                         )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = DarkBackground
+                    containerColor = PaperBackground
                 )
             )
         },
-        containerColor = DarkBackground
+        containerColor = PaperBackground
     ) { padding ->
         Column(
             modifier = Modifier
@@ -360,7 +360,7 @@ fun PracticePlanetScreen(
         ) {
             TabRow(
                 selectedTabIndex = selectedTab,
-                containerColor = DarkSurface,
+                containerColor = PaperSurface,
                 contentColor = NeonBlue
             ) {
                 Tab(
@@ -440,12 +440,12 @@ private fun BountyTaskCard(
                 text = task.title,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color = TextPrimary
+                color = InkPrimary
             )
             Text(
                 text = task.description,
                 style = MaterialTheme.typography.bodySmall,
-                color = TextSecondary
+                color = InkSecondary
             )
             Text(
                 text = "奖励：${task.rewardPoints} 积分 · ${task.rewardExp} 经验值",
@@ -487,12 +487,12 @@ private fun CampusEventCard(
                 text = event.title,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                color = TextPrimary
+                color = InkPrimary
             )
             Text(
                 text = "主办方：${event.organizer}",
                 style = MaterialTheme.typography.bodySmall,
-                color = TextSecondary
+                color = InkSecondary
             )
             Text(
                 text = "完成可获得 ${event.rewardPoints} 积分 · ${event.rewardExp} 经验值",

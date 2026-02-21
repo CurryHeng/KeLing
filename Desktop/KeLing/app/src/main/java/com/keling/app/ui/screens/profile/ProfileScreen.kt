@@ -10,14 +10,18 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.keling.app.ui.components.*
 import com.keling.app.ui.theme.*
 
@@ -25,12 +29,14 @@ import com.keling.app.ui.theme.*
 @Composable
 fun ProfileScreen(
     onNavigateToSettings: () -> Unit,
-    onNavigateToLearningReport: () -> Unit
+    onNavigateToLearningReport: () -> Unit,
+    viewModel: ProfileViewModel = hiltViewModel()
 ) {
+    val profileState by viewModel.uiState.collectAsState()
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(DarkBackground)
+            .background(PaperBackground)
             .statusBarsPadding()
             .verticalScroll(rememberScrollState())
     ) {
@@ -45,13 +51,13 @@ fun ProfileScreen(
                 Icon(
                     imageVector = Icons.Default.Settings,
                     contentDescription = "设置",
-                    tint = TextSecondary
+                    tint = InkSecondary
                 )
             }
         }
         
-        // 用户头像和信息
-        ProfileHeader()
+        // 用户头像和信息（连续学习天数随签到数据更新）
+        ProfileHeader(streak = profileState.streak)
         
         Spacer(modifier = Modifier.height(24.dp))
         
@@ -80,7 +86,7 @@ fun ProfileScreen(
 }
 
 @Composable
-private fun ProfileHeader() {
+private fun ProfileHeader(streak: Int = 0) {
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -107,7 +113,7 @@ private fun ProfileHeader() {
             Text(
                 text = "学",
                 style = MaterialTheme.typography.displaySmall,
-                color = DarkBackground
+                color = Color.White
             )
         }
         
@@ -118,7 +124,7 @@ private fun ProfileHeader() {
             text = "学习达人",
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
-            color = TextPrimary
+            color = InkPrimary
         )
         
         Spacer(modifier = Modifier.height(4.dp))
@@ -127,7 +133,7 @@ private fun ProfileHeader() {
         Text(
             text = "大连理工大学 · 计算机2024级",
             style = MaterialTheme.typography.bodyMedium,
-            color = TextSecondary
+            color = InkSecondary
         )
         
         Spacer(modifier = Modifier.height(8.dp))
@@ -150,7 +156,7 @@ private fun ProfileHeader() {
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = "连续学习 7 天",
+                text = "连续学习 $streak 天",
                 style = MaterialTheme.typography.labelLarge,
                 color = NeonOrange
             )
@@ -222,7 +228,7 @@ private fun StatCard(
             Text(
                 text = label,
                 style = MaterialTheme.typography.labelSmall,
-                color = TextSecondary
+                color = InkSecondary
             )
         }
     }
@@ -240,7 +246,7 @@ private fun ProfileMenuSection(
             text = "学习工具",
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
-            color = TextPrimary
+            color = InkPrimary
         )
         
         Spacer(modifier = Modifier.height(8.dp))
@@ -275,7 +281,7 @@ private fun ProfileMenuSection(
             text = "其他功能",
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
-            color = TextPrimary
+            color = InkPrimary
         )
         
         Spacer(modifier = Modifier.height(8.dp))
@@ -337,20 +343,20 @@ private fun ProfileMenuItem(
                 Text(
                     text = title,
                     style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Medium,
-                    color = TextPrimary
+                    fontWeight = FontWeight.Bold,
+                    color = InkPrimary
                 )
                 Text(
                     text = subtitle,
                     style = MaterialTheme.typography.bodySmall,
-                    color = TextSecondary
+                    color = InkSecondary
                 )
             }
             
             Icon(
                 imageVector = Icons.Default.ChevronRight,
                 contentDescription = null,
-                tint = TextTertiary
+                tint = InkMuted
             )
         }
     }

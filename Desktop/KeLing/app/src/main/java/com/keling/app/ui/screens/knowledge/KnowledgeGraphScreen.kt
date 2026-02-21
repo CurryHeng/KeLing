@@ -47,7 +47,7 @@ fun KnowledgeGraphScreen(
                 title = {
                     Text(
                         text = if (uiState.courseName.isBlank()) "知识图谱" else "${uiState.courseName} · 知识图谱",
-                        color = TextPrimary
+                        color = InkPrimary
                     )
                 },
                 navigationIcon = {
@@ -55,22 +55,22 @@ fun KnowledgeGraphScreen(
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "返回",
-                            tint = TextPrimary
+                            tint = InkPrimary
                         )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = DarkBackground
+                    containerColor = PaperBackground
                 )
             )
         },
-        containerColor = DarkBackground
+        containerColor = PaperBackground
     ) { padding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .background(DarkBackground)
+                .background(PaperBackground)
         ) {
             when {
                 uiState.isLoading -> {
@@ -88,7 +88,7 @@ fun KnowledgeGraphScreen(
                     ) {
                         Text(
                             text = uiState.error ?: "暂时无法加载知识图谱",
-                            color = TextSecondary
+                            color = InkSecondary
                         )
                     }
                 }
@@ -100,7 +100,7 @@ fun KnowledgeGraphScreen(
                         Text(
                             text = "暂时没有可用的知识图谱数据，稍后再试或多做题积累学习记录。",
                             style = MaterialTheme.typography.bodySmall,
-                            color = TextSecondary,
+                            color = InkSecondary,
                             modifier = Modifier.padding(24.dp)
                         )
                     }
@@ -117,7 +117,7 @@ fun KnowledgeGraphScreen(
                                 text = "核心知识点",
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
-                                color = TextPrimary
+                                color = InkPrimary
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                         }
@@ -147,7 +147,7 @@ private fun KnowledgePointCard(
     val glow = when {
         point.importance >= 4 -> NeonPurple
         point.difficulty >= 4 -> NeonOrange
-        else -> DarkBorder
+        else -> PaperBorder
     }
     NeonCard(glowColor = glow, onClick = onClick) {
         Column(
@@ -168,14 +168,14 @@ private fun KnowledgePointCard(
                     text = point.name,
                     style = MaterialTheme.typography.titleSmall,
                     fontWeight = FontWeight.Bold,
-                    color = TextPrimary
+                    color = InkPrimary
                 )
             }
             if (!point.description.isNullOrBlank()) {
                 Text(
                     text = point.description,
                     style = MaterialTheme.typography.bodySmall,
-                    color = TextSecondary
+                    color = InkSecondary
                 )
             }
             Row(
@@ -185,19 +185,19 @@ private fun KnowledgePointCard(
                 AssistChip(
                     onClick = {},
                     label = {
-                        Text("难度 ${point.difficulty}/5", color = TextSecondary)
+                        Text("难度 ${point.difficulty}/5", color = InkSecondary)
                     }
                 )
                 AssistChip(
                     onClick = {},
                     label = {
-                        Text("重要度 ${point.importance}/5", color = TextSecondary)
+                        Text("重要度 ${point.importance}/5", color = InkSecondary)
                     }
                 )
                 AssistChip(
                     onClick = {},
                     label = {
-                        Text("掌握度 ${(point.masteryLevel * 100).toInt()}%", color = TextSecondary)
+                        Text("掌握度 ${(point.masteryLevel * 100).toInt()}%", color = InkSecondary)
                     }
                 )
             }
@@ -207,7 +207,7 @@ private fun KnowledgePointCard(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .background(DarkSurfaceVariant, RoundedCornerShape(8.dp))
+                        .background(PaperSurfaceVariant, RoundedCornerShape(8.dp))
                         .padding(8.dp),
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
@@ -222,7 +222,7 @@ private fun KnowledgePointCard(
                         Text(
                             text = "相关关系",
                             style = MaterialTheme.typography.labelSmall,
-                            color = TextSecondary
+                            color = InkSecondary
                         )
                     }
                     relations.forEach { rel ->
@@ -235,7 +235,7 @@ private fun KnowledgePointCard(
                         Text(
                             text = "· $direction (${rel.fromPointId} → ${rel.toPointId})",
                             style = MaterialTheme.typography.bodySmall,
-                            color = TextTertiary
+                            color = InkMuted
                         )
                     }
                 }

@@ -36,14 +36,14 @@ fun SettingsScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(DarkBackground)
+            .background(PaperBackground)
     ) {
         TopAppBar(
             title = {
                 Text(
                     text = "设置",
                     style = MaterialTheme.typography.titleLarge,
-                    color = TextPrimary
+                    color = InkPrimary
                 )
             },
             navigationIcon = {
@@ -51,12 +51,12 @@ fun SettingsScreen(
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = "返回",
-                        tint = TextPrimary
+                        tint = InkPrimary
                     )
                 }
             },
             colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = DarkBackground
+                containerColor = PaperBackground
             )
         )
         
@@ -152,13 +152,13 @@ fun SettingsScreen(
             title = {
                 Text(
                     text = "确认退出",
-                    color = TextPrimary
+                    color = InkPrimary
                 )
             },
             text = {
                 Text(
                     text = "确定要退出登录吗？",
-                    color = TextSecondary
+                    color = InkSecondary
                 )
             },
             confirmButton = {
@@ -171,10 +171,10 @@ fun SettingsScreen(
             },
             dismissButton = {
                 TextButton(onClick = { showLogoutDialog = false }) {
-                    Text("取消", color = TextSecondary)
+                    Text("取消", color = InkSecondary)
                 }
             },
-            containerColor = DarkCard,
+            containerColor = PaperSurface,
             shape = RoundedCornerShape(16.dp)
         )
     }
@@ -190,11 +190,11 @@ private fun SettingsSection(
             text = title,
             style = MaterialTheme.typography.titleSmall,
             fontWeight = FontWeight.Bold,
-            color = TextSecondary,
+            color = InkSecondary,
             modifier = Modifier.padding(bottom = 8.dp)
         )
         
-        NeonCard(glowColor = DarkBorder) {
+        NeonCard(glowColor = PaperBorder) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
                 content = content
@@ -234,19 +234,20 @@ private fun SettingsItem(
                 Text(
                     text = title,
                     style = MaterialTheme.typography.bodyLarge,
-                    color = TextPrimary
+                    fontWeight = FontWeight.Bold,
+                    color = InkPrimary
                 )
                 Text(
                     text = subtitle,
                     style = MaterialTheme.typography.bodySmall,
-                    color = TextSecondary
+                    color = InkSecondary
                 )
             }
             
             Icon(
                 imageVector = Icons.Default.ChevronRight,
                 contentDescription = null,
-                tint = TextTertiary
+                tint = InkMuted
             )
         }
     }
@@ -279,12 +280,13 @@ private fun SettingsItemWithSwitch(
             Text(
                 text = title,
                 style = MaterialTheme.typography.bodyLarge,
-                color = TextPrimary
+                fontWeight = FontWeight.Bold,
+                color = InkPrimary
             )
             Text(
                 text = subtitle,
                 style = MaterialTheme.typography.bodySmall,
-                color = TextSecondary
+                color = InkSecondary
             )
         }
         
@@ -294,8 +296,8 @@ private fun SettingsItemWithSwitch(
             colors = SwitchDefaults.colors(
                 checkedThumbColor = NeonBlue,
                 checkedTrackColor = NeonBlue.copy(alpha = 0.3f),
-                uncheckedThumbColor = TextTertiary,
-                uncheckedTrackColor = DarkBorder
+                uncheckedThumbColor = InkMuted,
+                uncheckedTrackColor = PaperBorder
             )
         )
     }

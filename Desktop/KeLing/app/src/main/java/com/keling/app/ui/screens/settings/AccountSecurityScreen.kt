@@ -12,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import kotlinx.coroutines.launch
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -35,20 +36,20 @@ fun AccountSecurityScreen(
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        containerColor = DarkBackground
+        containerColor = PaperBackground
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .background(DarkBackground)
+                .background(PaperBackground)
         ) {
             TopAppBar(
                 title = {
                     Text(
                         text = "账户安全",
                         style = MaterialTheme.typography.titleLarge,
-                        color = TextPrimary
+                        color = InkPrimary
                     )
                 },
                 navigationIcon = {
@@ -56,12 +57,12 @@ fun AccountSecurityScreen(
                         Icon(
                             imageVector = Icons.Default.ArrowBack,
                             contentDescription = "返回",
-                            tint = TextPrimary
+                            tint = InkPrimary
                         )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = DarkBackground
+                    containerColor = PaperBackground
                 )
             )
 
@@ -76,9 +77,9 @@ fun AccountSecurityScreen(
                 Text(
                     text = "修改密码",
                     style = MaterialTheme.typography.titleMedium,
-                    color = TextPrimary
+                    color = InkPrimary
                 )
-                NeonCard(glowColor = DarkBorder) {
+                NeonCard(glowColor = PaperBorder) {
                     Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
                         PasswordField(
                             value = currentPassword,
@@ -125,9 +126,9 @@ fun AccountSecurityScreen(
                 Text(
                     text = "已绑定设备",
                     style = MaterialTheme.typography.titleMedium,
-                    color = TextPrimary
+                    color = InkPrimary
                 )
-                NeonCard(glowColor = DarkBorder) {
+                NeonCard(glowColor = PaperBorder) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically,
@@ -144,12 +145,13 @@ fun AccountSecurityScreen(
                                 Text(
                                     text = "当前设备",
                                     style = MaterialTheme.typography.bodyLarge,
-                                    color = TextPrimary
+                                    fontWeight = FontWeight.Bold,
+                                    color = InkPrimary
                                 )
                                 Text(
                                     text = "本机",
                                     style = MaterialTheme.typography.bodySmall,
-                                    color = TextSecondary
+                                    color = InkSecondary
                                 )
                             }
                         }
@@ -178,14 +180,14 @@ private fun PasswordField(
     OutlinedTextField(
         value = value,
         onValueChange = onValueChange,
-        label = { Text(label, color = TextSecondary) },
+        label = { Text(label, color = InkSecondary) },
         visualTransformation = if (visible) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
             IconButton(onClick = onToggleVisible) {
                 Icon(
                     imageVector = if (visible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
                     contentDescription = if (visible) "隐藏" else "显示",
-                    tint = TextSecondary
+                    tint = InkSecondary
                 )
             }
         },
@@ -193,14 +195,14 @@ private fun PasswordField(
         shape = RoundedCornerShape(12.dp),
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = NeonBlue,
-            unfocusedBorderColor = DarkBorder,
+            unfocusedBorderColor = PaperBorder,
             focusedLabelColor = NeonBlue,
-            unfocusedLabelColor = TextSecondary,
+            unfocusedLabelColor = InkSecondary,
             cursorColor = NeonBlue,
-            focusedTextColor = TextPrimary,
-            unfocusedTextColor = TextPrimary,
-            focusedContainerColor = DarkSurface,
-            unfocusedContainerColor = DarkSurface
+            focusedTextColor = InkPrimary,
+            unfocusedTextColor = InkPrimary,
+            focusedContainerColor = PaperSurface,
+            unfocusedContainerColor = PaperSurface
         ),
         modifier = Modifier.fillMaxWidth()
     )

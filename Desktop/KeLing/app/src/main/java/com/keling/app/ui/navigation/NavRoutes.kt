@@ -17,7 +17,10 @@ sealed class Screen(
     // 登录相关
     object Splash : Screen("splash", "启动页")
     object Login : Screen("login", "登录")
-    
+    object Register : Screen("register", "注册")
+    /** 签到页：当天成功登录后若未签到则先进入此页，签到后进入首页 */
+    object CheckIn : Screen("check_in", "每日签到")
+
     // 主要Tab页面
     object Home : Screen(
         "home", "首页",

@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -40,7 +41,7 @@ fun AIAssistantScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(DarkBackground)
+            .background(PaperBackground)
     ) {
         // 顶部栏
         TopAppBar(
@@ -61,7 +62,7 @@ fun AIAssistantScreen(
                         Text(
                             text = "灵",
                             style = MaterialTheme.typography.labelLarge,
-                            color = DarkBackground
+                            color = PaperBackground
                         )
                     }
                     Spacer(modifier = Modifier.width(12.dp))
@@ -69,7 +70,7 @@ fun AIAssistantScreen(
                         Text(
                             text = "课灵助手",
                             style = MaterialTheme.typography.titleMedium,
-                            color = TextPrimary
+                            color = InkPrimary
                         )
                         Text(
                             text = if (isTyping) "正在输入..." else "在线",
@@ -84,7 +85,7 @@ fun AIAssistantScreen(
                     Icon(
                         imageVector = Icons.Default.ArrowBack,
                         contentDescription = "返回",
-                        tint = TextPrimary
+                        tint = InkPrimary
                     )
                 }
             },
@@ -93,12 +94,12 @@ fun AIAssistantScreen(
                     Icon(
                         imageVector = Icons.Default.MoreVert,
                         contentDescription = "更多",
-                        tint = TextSecondary
+                        tint = InkSecondary
                     )
                 }
             },
             colors = TopAppBarDefaults.topAppBarColors(
-                containerColor = DarkSurface
+                containerColor = PaperSurface
             )
         )
         
@@ -172,7 +173,7 @@ private fun ChatBubble(message: ChatMessage) {
                 Text(
                     text = "灵",
                     style = MaterialTheme.typography.labelSmall,
-                    color = DarkBackground
+                    color = PaperBackground
                 )
             }
             Spacer(modifier = Modifier.width(8.dp))
@@ -182,7 +183,7 @@ private fun ChatBubble(message: ChatMessage) {
             modifier = Modifier
                 .widthIn(max = 280.dp)
                 .background(
-                    color = if (message.isFromUser) NeonBlue.copy(alpha = 0.2f) else DarkCard,
+                    color = if (message.isFromUser) NeonBlue.copy(alpha = 0.2f) else PaperSurface,
                     shape = RoundedCornerShape(
                         topStart = 16.dp,
                         topEnd = 16.dp,
@@ -192,7 +193,7 @@ private fun ChatBubble(message: ChatMessage) {
                 )
                 .border(
                     width = 1.dp,
-                    color = if (message.isFromUser) NeonBlue.copy(alpha = 0.3f) else DarkBorder,
+                    color = if (message.isFromUser) NeonBlue.copy(alpha = 0.3f) else PaperBorder,
                     shape = RoundedCornerShape(
                         topStart = 16.dp,
                         topEnd = 16.dp,
@@ -205,7 +206,7 @@ private fun ChatBubble(message: ChatMessage) {
             Text(
                 text = message.content,
                 style = MaterialTheme.typography.bodyMedium,
-                color = TextPrimary
+                color = InkPrimary
             )
         }
     }
@@ -273,13 +274,13 @@ private fun QuickActionChip(
     Surface(
         onClick = onClick,
         shape = RoundedCornerShape(20.dp),
-        color = DarkSurface,
-        border = BorderStroke(1.dp, DarkBorder)
+        color = PaperSurface,
+        border = BorderStroke(1.dp, PaperBorder)
     ) {
         Text(
             text = text,
             style = MaterialTheme.typography.labelSmall,
-            color = TextSecondary,
+            color = InkSecondary,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)
         )
     }
@@ -295,7 +296,7 @@ private fun ChatInput(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(DarkSurface)
+            .background(PaperSurface)
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -304,7 +305,7 @@ private fun ChatInput(
             onClick = onVoice,
             modifier = Modifier
                 .size(44.dp)
-                .background(DarkCard, CircleShape)
+                .background(PaperSurface, CircleShape)
         ) {
             Icon(
                 imageVector = Icons.Default.Mic,
@@ -322,18 +323,18 @@ private fun ChatInput(
             placeholder = {
                 Text(
                     "有什么可以帮你的？",
-                    color = TextTertiary
+                    color = InkMuted
                 )
             },
             modifier = Modifier.weight(1f),
             shape = RoundedCornerShape(24.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = NeonBlue,
-                unfocusedBorderColor = DarkBorder,
-                focusedContainerColor = DarkCard,
-                unfocusedContainerColor = DarkCard,
-                focusedTextColor = TextPrimary,
-                unfocusedTextColor = TextPrimary,
+                unfocusedBorderColor = PaperBorder,
+                focusedContainerColor = PaperSurface,
+                unfocusedContainerColor = PaperSurface,
+                focusedTextColor = InkPrimary,
+                unfocusedTextColor = InkPrimary,
                 cursorColor = NeonBlue
             ),
             singleLine = true
@@ -356,7 +357,7 @@ private fun ChatInput(
             Icon(
                 imageVector = Icons.Default.Send,
                 contentDescription = "发送",
-                tint = DarkBackground
+                tint = Color.White
             )
         }
     }

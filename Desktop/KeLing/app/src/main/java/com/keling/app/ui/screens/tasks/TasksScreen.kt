@@ -30,7 +30,7 @@ fun TasksScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(DarkBackground)
+            .background(PaperBackground)
             .statusBarsPadding()
     ) {
         // 顶部标题栏
@@ -45,7 +45,7 @@ fun TasksScreen(
                 text = "任务中心",
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold,
-                color = TextPrimary
+                color = InkPrimary
             )
             
             Row {
@@ -53,14 +53,14 @@ fun TasksScreen(
                     Icon(
                         imageVector = Icons.Default.Sync,
                         contentDescription = "刷新任务",
-                        tint = TextSecondary
+                        tint = InkSecondary
                     )
                 }
                 IconButton(onClick = { /* 搜索 */ }) {
                     Icon(
                         imageVector = Icons.Default.Search,
                         contentDescription = "搜索",
-                        tint = TextSecondary
+                        tint = InkSecondary
                     )
                 }
             }
@@ -178,7 +178,7 @@ private fun TaskStatItem(
             Text(
                 text = label,
                 style = MaterialTheme.typography.labelSmall,
-                color = TextSecondary
+                color = InkSecondary
             )
         }
     }
@@ -202,12 +202,12 @@ private fun EmptyTasksPlaceholder() {
         Text(
             text = "暂无任务",
             style = MaterialTheme.typography.titleMedium,
-            color = TextSecondary
+            color = InkSecondary
         )
         Text(
             text = "休息一下或探索新的挑战吧！",
             style = MaterialTheme.typography.bodySmall,
-            color = TextTertiary
+            color = InkMuted
         )
     }
 }
